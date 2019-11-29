@@ -5,6 +5,7 @@ import go.mik.Launcher.Launcher;
 
 public class PlayerStarter {
     private Client client;
+
     public static void main(String[] args) {
         new PlayerStarter();
     }
@@ -14,7 +15,7 @@ public class PlayerStarter {
     }
 
     private void initialize() {
-        Launcher launcher = new Launcher(this);
+        new Launcher(this);
     }
 
     public void clientInit(Client client) {

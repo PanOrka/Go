@@ -1,7 +1,7 @@
-package go.mik;
+package go.mik.Client;
 
-import go.mik.Client.Client;
-import go.mik.Launcher.Launcher;
+import go.mik.Client.Launcher.Launcher;
+import go.mik.Client.Logic.Client;
 
 public class PlayerStarter {
     private Client client;

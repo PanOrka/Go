@@ -1,4 +1,4 @@
-package go.mik.Client;
+package go.mik.Client.Logic;
 
 public interface Client {
 }

@@ -3,9 +3,8 @@ package go.mik;
 import go.mik.Client.Client;
 import go.mik.Launcher.Launcher;
 
-import java.net.Socket;
-
 public class PlayerStarter {
+    private Client client;
     public static void main(String[] args) {
         new PlayerStarter();
     }
@@ -18,7 +17,7 @@ public class PlayerStarter {
         Launcher launcher = new Launcher(this);
     }
 
-    public void clientInit(Client client, String nickName, Socket socket) {
-
+    public void clientInit(Client client) {
+        this.client = client;
     }
 }

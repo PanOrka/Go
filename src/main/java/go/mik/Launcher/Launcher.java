@@ -1,5 +1,6 @@
 package go.mik.Launcher;
 
+import go.mik.Client.Player;
 import go.mik.PlayerStarter;
 
 import javax.swing.*;
@@ -7,12 +8,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Launcher extends JFrame {
+public class Launcher extends JFrame implements ActionListener {
     private final JTextField nickName;
     private final JTextField socketPort;
+    private final JButton botPlayButton;
+    private final JButton playerPlayButton;
+    private final PlayerStarter playerStarter;
 
     public Launcher(PlayerStarter playerStarter) {
+        this.playerStarter = playerStarter;
         this.nickName = new JTextField();
+        this.playerPlayButton = new JButton("Play As Player");
+        this.botPlayButton = new JButton("Play As Bot");
         this.socketPort = new JTextField();
         this.setUI();
     }
@@ -30,22 +37,28 @@ public class Launcher extends JFrame {
         this.add(new JLabel("Socket Port", SwingConstants.CENTER));
         this.add(this.socketPort);
 
-        JButton botPlayButton = new JButton("Play As Bot");
-        botPlayButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        this.botPlayButton.addActionListener(this);
+        this.add(this.botPlayButton);
 
-            }
-        });
-        this.add(botPlayButton);
+        this.playerPlayButton.addActionListener(this);
+        this.add(this.playerPlayButton);
+    }
 
-        JButton playerPlayButton = new JButton("Play As Player");
-        playerPlayButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+    private void setPlayer() {
+        this.playerStarter.clientInit(new Player());
+        this.dispose();
+    }
 
-            }
-        });
-        this.add(playerPlayButton);
+    private void setBot() {
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == this.playerPlayButton) {
+            this.setPlayer();
+        } else if (e.getSource() == this.botPlayButton) {
+            this.setBot();
+        }
     }
 }

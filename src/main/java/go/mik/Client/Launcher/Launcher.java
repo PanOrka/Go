@@ -6,15 +6,13 @@ import go.mik.Client.PlayerStarter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class Launcher extends JFrame implements ActionListener {
+public class Launcher extends JFrame implements Runnable {
     private final JTextField nickName;
     private final JTextField socketPort;
     private final JTextField serverAddress;
-    private final JButton botPlayButton;
-    private final JButton playerPlayButton;
+    final JButton botPlayButton;
+    final JButton playerPlayButton;
     private final PlayerStarter playerStarter;
 
     public Launcher(PlayerStarter playerStarter) {
@@ -43,14 +41,14 @@ public class Launcher extends JFrame implements ActionListener {
         this.add(new JLabel("Socket Port", SwingConstants.CENTER));
         this.add(this.socketPort);
 
-        this.botPlayButton.addActionListener(this);
+        this.botPlayButton.addActionListener(new ButtonAdapter(this));
         this.add(this.botPlayButton);
 
-        this.playerPlayButton.addActionListener(this);
+        this.playerPlayButton.addActionListener(new ButtonAdapter(this));
         this.add(this.playerPlayButton);
     }
 
-    private void setPlayer() {
+    void setPlayer() {
         try {
             String nickName = this.nickName.getText();
             String serverAddress = this.serverAddress.getText();
@@ -64,16 +62,19 @@ public class Launcher extends JFrame implements ActionListener {
         }
     }
 
-    private void setBot() {
+    void setBot() {
 
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == this.playerPlayButton) {
-            this.setPlayer();
-        } else if (e.getSource() == this.botPlayButton) {
-            this.setBot();
+    public void run() {
+        try {
+            System.out.println ("Thread " +
+                    Thread.currentThread().getId() +
+                    " is running");
+        }
+        catch(Exception e) {
+            System.out.println ("Exception is caught");
         }
     }
 }

@@ -16,4 +16,11 @@ public class Player implements Client {
 
         // COS TAM KURWA UI
     }
+
+    @Override
+    public void start() {
+        while(true) {
+            System.out.println("SHIT");
+        }
+    }
 }

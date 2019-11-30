@@ -1,5 +1,6 @@
 package go.mik.UI;
 
+import go.mik.UI.Components.UI_Chat;
 import go.mik.UI.Components.UI_GameField;
 import go.mik.UI.Controllers.ButtonController;
 
@@ -18,15 +19,20 @@ public class UIWindow extends JFrame implements ActionListener{
 	private ButtonController _buttonController;
 	private JButton _blackStoneBtn;
 	private JPanel _mainPanel = new JPanel(new BorderLayout(2,2));
-	private JPanel _chatAndButtonsPanel = new JPanel(new GridLayout(2,1));
-	private JScrollPane _chat = new JScrollPane();
+	private JPanel _chatAndButtonsPanel = new JPanel(new GridLayout(2,1,10,0));
+	private UI_Chat _chatBox;
 	
 	public UIWindow(){
 		super();
 		takeInputForWindow();
 		createWindow();
-		createGameField(19,19);
+		createGameField(45,45);
+		initializeChat();
 		initializeButtons();
+		initializeChatAndButtonsPanel();
+		_mainPanel.add(_chatAndButtonsPanel, BorderLayout.EAST);
+
+		getMessageForChat("TEST");
 	}
 	
 	private void takeInputForWindow() {
@@ -65,23 +71,28 @@ public class UIWindow extends JFrame implements ActionListener{
 		_mainPanel.add(_gameField, BorderLayout.CENTER);
 
 	}
-
+	private void initializeChatAndButtonsPanel(){
+		_chatAndButtonsPanel.setBorder(new EmptyBorder(50,0,20,50));
+		_chatAndButtonsPanel.setBackground(Color.WHITE);
+		_chatAndButtonsPanel.add(_chatBox);
+		_chatAndButtonsPanel.add(_blackStoneBtn);
+	}
 	private void initializeButtons(){
 		_buttonController = new ButtonController(this);
 		_blackStoneBtn = new JButton("PASS");
 		_blackStoneBtn.setBackground(Color.white);
 		_blackStoneBtn.setBorderPainted(false);
 
-		_chat.setBorder(new EmptyBorder(0,0,0,500));
-
-		_chatAndButtonsPanel.setBorder(new EmptyBorder(50,0,20,50));
-		_chatAndButtonsPanel.add(_chat);
-		_chatAndButtonsPanel.add(_blackStoneBtn);
-		_chat.setBackground(Color.BLACK);
-
-		_mainPanel.add(_chatAndButtonsPanel, BorderLayout.EAST);
-
 	}
+
+	private void initializeChat(){
+		_chatBox = new UI_Chat();
+	}
+
+	public void getMessageForChat(String message){
+		_chatBox.addMessageToChat(message);
+	}
+
 
 	@Override
 	public void actionPerformed(ActionEvent action) {
@@ -90,5 +101,7 @@ public class UIWindow extends JFrame implements ActionListener{
 		}
 		
 	}
+
+
 	
 }

@@ -1,4 +1,4 @@
-package go.UI.Controllers;
+package go.mik.UI.Controllers;
 
 public class ButtonController {
 

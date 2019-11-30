@@ -1,4 +1,4 @@
-package go.UI.Managers;
+package go.mik.UI.Managers;
 
 public class UIMainManager {
 

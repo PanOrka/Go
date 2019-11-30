@@ -1,4 +1,4 @@
-package go.UI.Components;
+package go.mik.UI.Components;
 
 import javax.swing.JButton;
 

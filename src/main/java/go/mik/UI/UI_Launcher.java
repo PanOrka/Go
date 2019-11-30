@@ -1,10 +1,8 @@
-package go.UI;
+package go.mik.UI;
 
 public class UI_Launcher {
 
 	public static void main(String[] args) {
-		UIWindow window = new UIWindow();
-
+		new UIWindow();
 	}
-
 }

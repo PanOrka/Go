@@ -1,6 +1,6 @@
-package go.UI;
+package go.mik.UI;
 
-import go.UI.Components.UI_GameField;
+import go.mik.UI.Components.UI_GameField;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -21,7 +21,7 @@ public class UIWindow extends JFrame implements ActionListener{
 		super();
 		takeInputForWindow();
 		createWindow();
-		createGameField(100,100);
+		createGameField(19,19);
 	}
 	
 	private void takeInputForWindow() {

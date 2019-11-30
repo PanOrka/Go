@@ -1,10 +1,6 @@
 package go.mik.UI.Components;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class UI_GameField extends JPanel{
@@ -20,8 +16,8 @@ public class UI_GameField extends JPanel{
 	}
 	public void printGameBoard(Graphics g) {
 		int defaultGap = 50;
-		int verLength = (int) Math.floor((_windowSizeX - 100)/_verFieldAmount);
-		int horLength = (int) Math.floor((_windowSizeY - 100)/_horFieldAmount);
+		int verLength = (int) Math.floor((_windowSizeX - 650)/_verFieldAmount);
+		int horLength = (int) Math.floor((_windowSizeY - 150)/_horFieldAmount);
 		
 		printEdges(g,verLength,horLength,defaultGap);
 		printHorLines(g,verLength,horLength,defaultGap);
@@ -79,7 +75,6 @@ public class UI_GameField extends JPanel{
 			this._windowSizeY = windowSizeY;
 			return this;
 		}
-		
 
 		public UI_GameField buildGameField() {
 			UI_GameField gameField = new UI_GameField();

@@ -1,7 +1,6 @@
 package go.mik.Client;
 
 import go.mik.Client.Launcher.Launcher;
-import go.mik.Client.Logic.Client;
 
 public class PlayerStarter {
     private Client client;
@@ -16,7 +15,6 @@ public class PlayerStarter {
         while(!this.start) {
             // WAIT FOR THREAD
         }
-        System.out.println("Go on");
         this.client.start();
     }
 

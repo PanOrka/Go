@@ -1,7 +1,6 @@
 package go.mik.Server;
 
 import go.mik.Server.Launcher.Launcher;
-import go.mik.Server.Logic.Server;
 
 public class ServerStarter {
     private Server server;
@@ -16,7 +15,6 @@ public class ServerStarter {
         while(!this.start) {
             // WAIT FOR THREAD
         }
-        System.out.println("Go on");
         this.server.start();
     }
 

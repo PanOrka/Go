@@ -1,6 +1,6 @@
 package go.mik.Server.Launcher;
 
-import go.mik.Server.Logic.Server;
+import go.mik.Server.Server;
 import go.mik.Server.ServerStarter;
 
 import javax.swing.*;

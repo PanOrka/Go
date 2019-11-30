@@ -19,6 +19,7 @@ public class Player implements Client {
 
     @Override
     public void start() {
+        System.out.println("Player is Running");
         while(true) {
             System.out.println("SHIT");
         }

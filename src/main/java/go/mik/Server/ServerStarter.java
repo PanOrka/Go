@@ -21,8 +21,7 @@ public class ServerStarter {
     }
 
     private void initialize() {
-        Thread launcher = new Thread(new Launcher(this));
-        launcher.start();
+        new Launcher(this);
     }
 
     public void serverInit(Server server) {

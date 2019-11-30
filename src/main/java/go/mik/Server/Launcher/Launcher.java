@@ -5,8 +5,10 @@ import go.mik.Server.ServerStarter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Launcher extends JFrame implements Runnable {
+public class Launcher extends JFrame implements ActionListener {
     private final JTextField socketPort;
     private final JButton startServer;
     private final ServerStarter serverStarter;
@@ -27,11 +29,11 @@ public class Launcher extends JFrame implements Runnable {
         this.add(new JLabel("Socket Port", SwingConstants.CENTER));
         this.add(this.socketPort);
 
-        this.startServer.addActionListener(new ButtonAdapter(this));
+        this.startServer.addActionListener(this);
         this.add(this.startServer);
     }
 
-    void setServer() {
+    private void setServer() {
         try {
             int socketPort = Integer.parseInt(this.socketPort.getText());
 
@@ -44,14 +46,7 @@ public class Launcher extends JFrame implements Runnable {
     }
 
     @Override
-    public void run() {
-        try {
-            System.out.println ("Thread " +
-                    Thread.currentThread().getId() +
-                    " is running");
-        }
-        catch(Exception e) {
-            System.out.println ("Exception is caught");
-        }
+    public void actionPerformed(ActionEvent e) {
+        this.setServer();
     }
 }

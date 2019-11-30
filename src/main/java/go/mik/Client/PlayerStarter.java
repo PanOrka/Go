@@ -21,8 +21,7 @@ public class PlayerStarter {
     }
 
     private void initialize() {
-        Thread launcher = new Thread(new Launcher(this));
-        launcher.start();
+        new Launcher(this);
     }
 
     public void clientInit(Client client) {

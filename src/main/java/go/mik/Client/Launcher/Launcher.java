@@ -6,13 +6,15 @@ import go.mik.Client.PlayerStarter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Launcher extends JFrame implements Runnable {
+public class Launcher extends JFrame implements ActionListener {
     private final JTextField nickName;
     private final JTextField socketPort;
     private final JTextField serverAddress;
-    final JButton botPlayButton;
-    final JButton playerPlayButton;
+    private final JButton botPlayButton;
+    private final JButton playerPlayButton;
     private final PlayerStarter playerStarter;
 
     public Launcher(PlayerStarter playerStarter) {
@@ -41,14 +43,14 @@ public class Launcher extends JFrame implements Runnable {
         this.add(new JLabel("Socket Port", SwingConstants.CENTER));
         this.add(this.socketPort);
 
-        this.botPlayButton.addActionListener(new ButtonAdapter(this));
+        this.botPlayButton.addActionListener(this);
         this.add(this.botPlayButton);
 
-        this.playerPlayButton.addActionListener(new ButtonAdapter(this));
+        this.playerPlayButton.addActionListener(this);
         this.add(this.playerPlayButton);
     }
 
-    void setPlayer() {
+    private void setPlayer() {
         try {
             String nickName = this.nickName.getText();
             String serverAddress = this.serverAddress.getText();
@@ -62,19 +64,16 @@ public class Launcher extends JFrame implements Runnable {
         }
     }
 
-    void setBot() {
+    private void setBot() {
 
     }
 
     @Override
-    public void run() {
-        try {
-            System.out.println ("Thread " +
-                    Thread.currentThread().getId() +
-                    " is running");
-        }
-        catch(Exception e) {
-            System.out.println ("Exception is caught");
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == this.playerPlayButton) {
+            this.setPlayer();
+        } else if (e.getSource() == this.botPlayButton) {
+            this.setBot();
         }
     }
 }

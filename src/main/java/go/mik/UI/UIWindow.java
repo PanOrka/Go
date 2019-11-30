@@ -18,9 +18,12 @@ public class UIWindow extends JFrame implements ActionListener{
 	private static UI_GameField _gameField;
 	private ButtonController _buttonController;
 	private JButton _blackStoneBtn;
+	private JButton _surrenderBtn;
 	private JPanel _mainPanel = new JPanel(new BorderLayout(2,2));
-	private JPanel _chatAndButtonsPanel = new JPanel(new GridLayout(2,1,10,0));
+	private JPanel _chatAndButtonsPanel = new JPanel(new GridBagLayout());
+	private JScrollPane _chatPanel;
 	private UI_Chat _chatBox;
+	private JTextField _inputForChat;
 	
 	public UIWindow(){
 		super();
@@ -30,9 +33,10 @@ public class UIWindow extends JFrame implements ActionListener{
 		initializeChat();
 		initializeButtons();
 		initializeChatAndButtonsPanel();
-		_mainPanel.add(_chatAndButtonsPanel, BorderLayout.EAST);
 
-		getMessageForChat("TEST");
+		getMessageForChat("TESTXDDDDDDDDDDDDDD\n");
+		getMessageForChat("TEST2\n");
+		getMessageForChat("TEST3\n");
 	}
 	
 	private void takeInputForWindow() {
@@ -72,21 +76,57 @@ public class UIWindow extends JFrame implements ActionListener{
 
 	}
 	private void initializeChatAndButtonsPanel(){
-		_chatAndButtonsPanel.setBorder(new EmptyBorder(50,0,20,50));
+		GridBagConstraints c = new GridBagConstraints();
+
+		_chatAndButtonsPanel.setBorder(new EmptyBorder(50,100,20,100));
 		_chatAndButtonsPanel.setBackground(Color.WHITE);
-		_chatAndButtonsPanel.add(_chatBox);
-		_chatAndButtonsPanel.add(_blackStoneBtn);
+
+		_chatPanel = new JScrollPane(_chatBox);
+		_chatPanel.setPreferredSize(new Dimension(350,550));
+
+		c.anchor = GridBagConstraints.FIRST_LINE_START;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weighty = 0;
+		_chatAndButtonsPanel.add(_chatPanel,c);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.weighty = 0.2;
+		c.weightx = 1;
+		_chatAndButtonsPanel.add(_inputForChat,c);
+		c.anchor = GridBagConstraints.CENTER;
+		c.gridx = 0;
+		c.gridy = 2;
+		c.weighty = 0;
+		c.weightx = 1;
+		_chatAndButtonsPanel.add(_blackStoneBtn,c);
+		c.gridx = 0;
+		c.gridy = 3;
+		c.weighty = 0.8;
+		c.weightx = 0;
+		_chatAndButtonsPanel.add(_surrenderBtn,c);
+
+		_mainPanel.add(_chatAndButtonsPanel, BorderLayout.EAST);
 	}
 	private void initializeButtons(){
 		_buttonController = new ButtonController(this);
 		_blackStoneBtn = new JButton("PASS");
 		_blackStoneBtn.setBackground(Color.white);
 		_blackStoneBtn.setBorderPainted(false);
+		_blackStoneBtn.setPreferredSize(new Dimension(100,50));
+
+		_surrenderBtn = new JButton();
+		_surrenderBtn.setIcon(new ImageIcon(getClass().getResource("/kamien.png")));
+		_surrenderBtn.setBackground(Color.white);
+		_surrenderBtn.setBorderPainted(false);
+		_surrenderBtn.setPreferredSize(new Dimension(150,50));
 
 	}
 
 	private void initializeChat(){
 		_chatBox = new UI_Chat();
+		_inputForChat = new JTextField();
+		_inputForChat.setPreferredSize(new Dimension(350, 50));
 	}
 
 	public void getMessageForChat(String message){

@@ -11,10 +11,11 @@ class TestSender extends JFrame implements ActionListener {
 
     TestSender(String nickName, Player player) {
         super("Go " + nickName);
+        this.setVisible(true);
         this.player = player;
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(new GridLayout(2, 1));
-        this.setSize(new Dimension(150, 100));
+        this.setSize(new Dimension(300, 100));
 
         this.text = new JTextField();
         this.add(this.text);

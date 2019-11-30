@@ -50,14 +50,14 @@ public class GameAdapter extends Game {
             this.output.println("WELCOME " + this.nickName);
             if (color == 'B') {
                 currentPlayer = this;
-                this.output.println("CHAT:You are playing as white");
-                this.output.println("SET_COLOR:white");
+                this.output.println("CHAT:You are playing as black");
+                this.output.println("SET_COLOR:black");
                 this.output.println("CHAT:Waiting for opponent to connect...");
             } else {
                 this.opponent = currentPlayer;
                 this.opponent.opponent = this;
                 this.opponent.output.println("CHAT:" + this.nickName + " Joined the game");
-                this.output.println("CHAT:You are playing as black");
+                this.output.println("CHAT:You are playing as white");
                 this.output.println("SET_COLOR:white");
                 this.output.println("CHAT:You are playing against " + this.opponent.nickName);
                 this.opponent.output.println("CHAT:Your move");

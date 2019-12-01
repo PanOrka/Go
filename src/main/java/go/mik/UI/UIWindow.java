@@ -33,6 +33,7 @@ public class UIWindow extends JFrame implements ActionListener{
 		initializeChat();
 		initializeButtons();
 		initializeChatAndButtonsPanel();
+		setVisible(true);
 
 		getMessageForChat("TESTXDDDDDDDDDDDDDD\n");
 		getMessageForChat("TEST2\n");
@@ -57,7 +58,6 @@ public class UIWindow extends JFrame implements ActionListener{
 		setSize(1500, 1000);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setContentPane(_mainPanel);
-		setVisible(true);
 	}
 	
 	private void createGameField(int verFieldAmount, int horFieldAmount) {

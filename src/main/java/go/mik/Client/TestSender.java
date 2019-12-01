@@ -26,6 +26,6 @@ class TestSender extends JFrame implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        player.send(text.getText());
+        player.sendToOpponentChat(text.getText());
     }
 }

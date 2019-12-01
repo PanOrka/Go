@@ -31,11 +31,18 @@ public class Player implements Client {
                 System.out.println(response);
 
                 if (response.startsWith("SET_COLOR:")) {
-                    // UI <= set color
+                    response = response.replaceFirst("SET_COLOR:", "");
+                    this.setColor(response);
+
                 } else if (response.startsWith("CHAT:")) {
-                    // UI.JTextField <= append.response
+                    response = response.replaceFirst("CHAT:", "");
+                    if (!response.equals("")) {
+                        this.sendToChat(response);
+                    }
+
                 } else if (response.startsWith("GAME:")) {
-                    // UI.setStones <= response // thread na ui ktory przekazuje response albo parsuje i przekazuje response // może tak zrobimy
+                    response = response.replaceFirst("GAME:", "");
+                    this.setStones(response);
                 }
             }
         } catch(Exception ex) {
@@ -43,7 +50,41 @@ public class Player implements Client {
         }
     }
 
-    public void send(String text) {
-        this.output.println(text);
+    @Override
+    public void sendToOpponentChat(String message) {
+        // TUTAJ musi być
+        // CHAT:
+        this.output.println("CHAT:" + message);
+    }
+
+    @Override
+    public void sendToChat(String message) {
+        // SEND TO CHAT UI
+        // UI.JTextField <= append.message
+
+        System.out.println(message); // TEST na konsoli
+    }
+
+    @Override
+    public void setColor(String color) {
+        // SET IN UI
+        // UI <= set color
+
+        System.out.println(color); // TEST na konsoli
+    }
+
+    @Override
+    public void setStones(String gameSet) {
+        // SET IN UI.PANEL
+        // UI.setStones <= response // thread na ui ktory przekazuje response albo parsuje i przekazuje response // może tak zrobimy
+
+        System.out.println(gameSet);
+    }
+
+    @Override
+    public void move(String position) {
+        // TUTAJ musi byc
+        // MOVE:
+        this.output.println("MOVE:" + position);
     }
 }

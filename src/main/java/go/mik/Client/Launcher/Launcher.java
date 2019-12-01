@@ -1,7 +1,7 @@
 package go.mik.Client.Launcher;
 
-import go.mik.Client.Logic.Client;
-import go.mik.Client.Logic.Player;
+import go.mik.Client.Client;
+import go.mik.Client.Player;
 import go.mik.Client.PlayerStarter;
 
 import javax.swing.*;

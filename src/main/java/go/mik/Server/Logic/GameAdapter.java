@@ -47,7 +47,7 @@ public class GameAdapter extends Game {
 
             this.nickName = this.input.nextLine();
 
-            this.output.println("WELCOME " + this.nickName);
+            this.output.println("CHAT:WELCOME " + this.nickName);
             if (color == 'B') {
                 currentPlayer = this;
                 this.output.println("CHAT:You are playing as black");

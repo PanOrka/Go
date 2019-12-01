@@ -25,17 +25,25 @@ public class Player implements Client {
         try {
             output.println(nickName);
 
-            String response; // WELCOME ...
+            String response;
             while (input.hasNextLine()) {
                 response = input.nextLine();
                 System.out.println(response);
+
+                if (response.startsWith("SET_COLOR:")) {
+                    // UI <= set color
+                } else if (response.startsWith("CHAT:")) {
+                    // UI.JTextField <= append.response
+                } else if (response.startsWith("GAME:")) {
+                    // UI.setStones <= response // thread na ui ktory przekazuje response albo parsuje i przekazuje response // może tak zrobimy
+                }
             }
         } catch(Exception ex) {
             System.err.println(ex.getMessage());
         }
     }
 
-    void send(String text) {
+    public void send(String text) {
         this.output.println(text);
     }
 }

@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-
+// ZABAWA
 public class UIWindow extends JFrame implements ActionListener{
 	
 	private int _pickedSocketID;

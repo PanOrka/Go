@@ -29,7 +29,7 @@ public class UIWindow extends JFrame implements ActionListener{
 		super();
 		takeInputForWindow();
 		createWindow();
-		createGameField(45,45);
+		createGameField(19,19);
 		initializeChat();
 		initializeButtons();
 		initializeChatAndButtonsPanel();
@@ -115,8 +115,8 @@ public class UIWindow extends JFrame implements ActionListener{
 		_blackStoneBtn.setBorderPainted(false);
 		_blackStoneBtn.setPreferredSize(new Dimension(100,50));
 
-		_surrenderBtn = new JButton();
-		_surrenderBtn.setIcon(new ImageIcon(getClass().getResource("/kamien.png")));
+		_surrenderBtn = new JButton("SURRENDER");
+		//_surrenderBtn.setIcon(new ImageIcon(getClass().getResource("/kamien.png")));
 		_surrenderBtn.setBackground(Color.white);
 		_surrenderBtn.setBorderPainted(false);
 		_surrenderBtn.setPreferredSize(new Dimension(150,50));
@@ -142,6 +142,4 @@ public class UIWindow extends JFrame implements ActionListener{
 		
 	}
 
-
-	
 }

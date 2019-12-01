@@ -7,4 +7,5 @@ public interface Client {
     void setStones(String gameSet);
     void sendToOpponentChat(String message);
     void move(String position);
+    void quit();
 }

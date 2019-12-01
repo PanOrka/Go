@@ -51,14 +51,14 @@ public class Player implements Client {
     }
 
     @Override
-    public void sendToOpponentChat(String message) {
+    public void sendToOpponentChat(String message) { // TO NA SERVER z UI
         // TUTAJ musi być
         // CHAT:
         this.output.println("CHAT:" + message);
     }
 
     @Override
-    public void sendToChat(String message) {
+    public void sendToChat(String message) { // TO NA UI
         // SEND TO CHAT UI
         // UI.JTextField <= append.message
 
@@ -66,7 +66,7 @@ public class Player implements Client {
     }
 
     @Override
-    public void setColor(String color) {
+    public void setColor(String color) { // TO NA UI
         // SET IN UI
         // UI <= set color
 
@@ -74,7 +74,7 @@ public class Player implements Client {
     }
 
     @Override
-    public void setStones(String gameSet) {
+    public void setStones(String gameSet) { // TO NA UI
         // SET IN UI.PANEL
         // UI.setStones <= response // thread na ui ktory przekazuje response albo parsuje i przekazuje response // może tak zrobimy
 
@@ -82,9 +82,14 @@ public class Player implements Client {
     }
 
     @Override
-    public void move(String position) {
+    public void move(String position) { // TO NA SERVER z UI
         // TUTAJ musi byc
         // MOVE:
         this.output.println("MOVE:" + position);
+    }
+
+    @Override
+    public void quit() { // TO NA SERVER z UI
+        this.output.println("QUIT");
     }
 }

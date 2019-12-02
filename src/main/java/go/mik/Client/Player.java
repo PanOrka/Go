@@ -1,5 +1,8 @@
 package go.mik.Client;
 
+import go.mik.UI.Components.UI_GameField;
+import go.mik.UI.UIWindow;
+
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
@@ -8,15 +11,22 @@ public class Player implements Client {
     private String nickName;
     private Scanner input;
     private PrintWriter output;
+    private UIWindow _gameWindow;
+    private _playerColour pickedColour;
+
+    private enum _playerColour {
+        BLACK,
+        WHITE
+    }
 
     public Player(String nickName, String serverAddress, int socketPort) throws Exception {
         this.nickName = nickName;
         Socket socket = new Socket(serverAddress, socketPort);
         this.input = new Scanner(socket.getInputStream());
         this.output = new PrintWriter(socket.getOutputStream(), true);
+        this._gameWindow = new UIWindow(this);
 
-        // COS TAM KURWA UI
-        new TestSender(this.nickName, this); // TEST OF SENDING CLIENT -> SERVER -> CLIENT
+        //new TestSender(this.nickName, this); // TEST OF SENDING CLIENT -> SERVER -> CLIENT
     }
 
     @Override
@@ -31,18 +41,16 @@ public class Player implements Client {
                 System.out.println(response);
 
                 if (response.startsWith("SET_COLOR:")) {
-                    response = response.replaceFirst("SET_COLOR:", "");
-                    this.setColor(response);
-
-                } else if (response.startsWith("CHAT:")) {
-                    response = response.replaceFirst("CHAT:", "");
-                    if (!response.equals("")) {
-                        this.sendToChat(response);
+                    if(response.contains("white")){
+                        setColor("white");
                     }
-
+                    else if(response.contains("black")) {
+                        setColor("black");
+                    }
+                } else if (response.startsWith("CHAT:")) {
+                    _gameWindow.getMessageForChat(response + "\n");
                 } else if (response.startsWith("GAME:")) {
-                    response = response.replaceFirst("GAME:", "");
-                    this.setStones(response);
+                    // UI.setStones <= response // thread na ui ktory przekazuje response albo parsuje i przekazuje response // może tak zrobimy
                 }
             }
         } catch(Exception ex) {
@@ -50,46 +58,44 @@ public class Player implements Client {
         }
     }
 
-    @Override
-    public void sendToOpponentChat(String message) { // TO NA SERVER z UI
-        // TUTAJ musi być
-        // CHAT:
-        this.output.println("CHAT:" + message);
+    public String getPlayerName(){
+        return this.nickName;
     }
 
     @Override
-    public void sendToChat(String message) { // TO NA UI
-        // SEND TO CHAT UI
-        // UI.JTextField <= append.message
-
-        System.out.println(message); // TEST na konsoli
+    public void sendToChat(String message) {
+        this.output.println(message);
     }
 
     @Override
-    public void setColor(String color) { // TO NA UI
-        // SET IN UI
-        // UI <= set color
-
-        System.out.println(color); // TEST na konsoli
+    public void setColor(String color) {
+        switch(color) {
+            case "black":
+                this.pickedColour = _playerColour.BLACK;
+                break;
+            case "white":
+                this.pickedColour = _playerColour.WHITE;
+                break;
+        }
     }
 
     @Override
-    public void setStones(String gameSet) { // TO NA UI
-        // SET IN UI.PANEL
-        // UI.setStones <= response // thread na ui ktory przekazuje response albo parsuje i przekazuje response // może tak zrobimy
+    public void setStones(String gameSet) {
 
-        System.out.println(gameSet);
     }
 
     @Override
-    public void move(String position) { // TO NA SERVER z UI
-        // TUTAJ musi byc
-        // MOVE:
-        this.output.println("MOVE:" + position);
+    public void sendToOpponentChat(String message) {
+        this.output.println(message);
     }
 
     @Override
-    public void quit() { // TO NA SERVER z UI
-        this.output.println("QUIT");
+    public void move(String position) {
+
+    }
+
+    @Override
+    public void quit() {
+
     }
 }

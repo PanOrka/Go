@@ -1,5 +1,7 @@
 package go.mik.UI;
 
+import go.mik.Client.Client;
+import go.mik.Client.Player;
 import go.mik.UI.Components.UI_Chat;
 import go.mik.UI.Components.UI_GameField;
 import go.mik.UI.Controllers.ButtonController;
@@ -24,10 +26,12 @@ public class UIWindow extends JFrame implements ActionListener{
 	private JScrollPane _chatPanel;
 	private UI_Chat _chatBox;
 	private JTextField _inputForChat;
+	private Player _player;
+
 	
-	public UIWindow(){
+	public UIWindow(Player player){
 		super();
-		takeInputForWindow();
+		this._player = player;
 		createWindow();
 		createGameField(19,19);
 		initializeChat();
@@ -35,21 +39,6 @@ public class UIWindow extends JFrame implements ActionListener{
 		initializeChatAndButtonsPanel();
 		setVisible(true);
 
-		getMessageForChat("TESTXDDDDDDDDDDDDDD\n");
-		getMessageForChat("TEST2\n");
-		getMessageForChat("TEST3\n");
-	}
-	
-	private void takeInputForWindow() {
-		while(true) {
-			try {
-				_pickedSocketID = Integer.parseInt((JOptionPane.showInputDialog(this, "Do jakiego socketu chcesz sie polaczyc?")));
-				break;
-			}catch(NumberFormatException ex) {
-				JOptionPane.showMessageDialog(this,"Podales bledny format socketu");
-			}
-			
-		}
 	}
 	
 	private void createWindow() {
@@ -89,17 +78,27 @@ public class UIWindow extends JFrame implements ActionListener{
 		c.gridy = 0;
 		c.weighty = 0;
 		_chatAndButtonsPanel.add(_chatPanel,c);
+
 		c.gridx = 0;
 		c.gridy = 1;
 		c.weighty = 0.2;
 		c.weightx = 1;
+		_inputForChat.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				_player.sendToOpponentChat("CHAT: " + _inputForChat.getText());
+				_inputForChat.setText("");
+			}
+		});
 		_chatAndButtonsPanel.add(_inputForChat,c);
+
 		c.anchor = GridBagConstraints.CENTER;
 		c.gridx = 0;
 		c.gridy = 2;
 		c.weighty = 0;
 		c.weightx = 1;
 		_chatAndButtonsPanel.add(_blackStoneBtn,c);
+
 		c.gridx = 0;
 		c.gridy = 3;
 		c.weighty = 0.8;
@@ -132,7 +131,6 @@ public class UIWindow extends JFrame implements ActionListener{
 	public void getMessageForChat(String message){
 		_chatBox.addMessageToChat(message);
 	}
-
 
 	@Override
 	public void actionPerformed(ActionEvent action) {

@@ -25,6 +25,7 @@ public class UI_GameField extends JPanel implements MouseListener {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		printGameBoard(g);
+
 	}
 	public void printGameBoard(Graphics g) {
 		int defaultGap = 50;
@@ -68,15 +69,25 @@ public class UI_GameField extends JPanel implements MouseListener {
 	public int[] whichFieldWasPicked(int locX, int locY){
 		for(Rectangle rect : _rects){
 			if(rect.contains(locX,locY)){
-				int[] pickedField = new int[2];
+				int[] pickedField = new int[4];
 				pickedField[0] = (rect.x)/_verLength + 1;
 				pickedField[1] = (rect.y)/_horLength + 1;
-				System.out.println(pickedField[0] + "    " + pickedField[1]);
+				//System.out.println(pickedField[0] + "    " + pickedField[1]);
 				return pickedField;
 			}
 		}
 		return null;
 	}
+
+	public void printStoneOnConcreteField(String colour, int fieldX, int fieldY){
+		if(colour.equals("black")){
+
+		}
+		else if(colour.equals("white")){
+
+		}
+	}
+
 	
 	public static GameFieldBuilder builder() {
 	    return new GameFieldBuilder();
@@ -89,7 +100,12 @@ public class UI_GameField extends JPanel implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent mouseEvent) {
-		whichFieldWasPicked(mouseEvent.getX(),mouseEvent.getY());
+		boolean canMove = true;
+		if(canMove){
+			int[] pickedField = whichFieldWasPicked(mouseEvent.getX(),mouseEvent.getY());
+			printStoneOnConcreteField("black",mouseEvent.getX(),mouseEvent.getY());
+		}
+
 	}
 
 	@Override

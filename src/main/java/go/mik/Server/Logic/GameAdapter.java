@@ -8,6 +8,10 @@ import java.util.Scanner;
 public class GameAdapter extends Game {
     volatile private Player currentPlayer;
 
+    public GameAdapter() {
+        super();
+    }
+
     public class Player implements Runnable {
         private char color;
         private Socket socket;
@@ -90,12 +94,14 @@ public class GameAdapter extends Game {
                 return;
             }
 
-            String response = move(command); /*   TUTAJ prawdopodobnie bedziemy przekazywac stringa z pozycjami, pojedyncze lub update np: dla planszy 4x4 (spacje dla czytelnosci)
-                                             //   { o x x o ;
-                                             //     y y x o ;
-                                             //     x o o x ;
-                                             //     y y y o }
-                                             */
+
+            String response = move(command, this.color); /*   TUTAJ prawdopodobnie bedziemy przekazywac stringa z pozycjami, pojedyncze lub update np: dla planszy 4x4 (spacje dla czytelnosci)
+                                                         //   { o x x o ;
+                                                         //     y y x o ;
+                                                         //     x o o x ;
+                                                         //     y y y o }
+                                                         */
+
             if (response.startsWith("GAME:")) {
                 this.output.println(response);
                 this.opponent.output.println(response);

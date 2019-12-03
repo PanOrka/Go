@@ -1,6 +1,5 @@
 package go.mik.UI;
 
-import go.mik.Client.Client;
 import go.mik.Client.Player;
 import go.mik.UI.Components.UI_Chat;
 import go.mik.UI.Components.UI_GameField;
@@ -27,10 +26,11 @@ public class UIWindow extends JFrame implements ActionListener{
 	private UI_Chat _chatBox;
 	private JTextField _inputForChat;
 	private Player _player;
+	private final String _nickName;
 
-	
-	public UIWindow(Player player){
-		super();
+	public UIWindow(Player player, String nickName){
+		super("Go " + nickName);
+		this._nickName = nickName;
 		this._player = player;
 		createWindow();
 		createGameField(19,19);
@@ -43,7 +43,7 @@ public class UIWindow extends JFrame implements ActionListener{
 	
 	private void createWindow() {
 		setResizable(false);
-		setTitle("Go game");
+		//setTitle("Go game");
 		setSize(1500, 1000);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setContentPane(_mainPanel);
@@ -86,7 +86,8 @@ public class UIWindow extends JFrame implements ActionListener{
 		_inputForChat.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent) {
-				_player.sendToOpponentChat("CHAT: " + _inputForChat.getText());
+				_player.sendToOpponentChat("CHAT:" + _inputForChat.getText());
+				getMessageForChat(_nickName + ": " + _inputForChat.getText() + '\n');
 				_inputForChat.setText("");
 			}
 		});

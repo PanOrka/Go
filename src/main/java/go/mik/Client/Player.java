@@ -1,6 +1,5 @@
 package go.mik.Client;
 
-import go.mik.UI.Components.UI_GameField;
 import go.mik.UI.UIWindow;
 
 import java.io.PrintWriter;
@@ -24,7 +23,7 @@ public class Player implements Client {
         Socket socket = new Socket(serverAddress, socketPort);
         this.input = new Scanner(socket.getInputStream());
         this.output = new PrintWriter(socket.getOutputStream(), true);
-        this._gameWindow = new UIWindow(this);
+        this._gameWindow = new UIWindow(this, nickName);
 
         //new TestSender(this.nickName, this); // TEST OF SENDING CLIENT -> SERVER -> CLIENT
     }
@@ -48,7 +47,8 @@ public class Player implements Client {
                         setColor("black");
                     }
                 } else if (response.startsWith("CHAT:")) {
-                    _gameWindow.getMessageForChat(response + "\n");
+                    response = response.replaceFirst("CHAT:", "");
+                    this.sendToChat(response);
                 } else if (response.startsWith("GAME:")) {
                     // UI.setStones <= response // thread na ui ktory przekazuje response albo parsuje i przekazuje response // może tak zrobimy
                 }
@@ -64,7 +64,7 @@ public class Player implements Client {
 
     @Override
     public void sendToChat(String message) {
-        this.output.println(message);
+        _gameWindow.getMessageForChat(message + "\n");
     }
 
     @Override

@@ -1,5 +1,8 @@
 package go.mik.UI.Components;
 
+import go.mik.Client.Player;
+import go.mik.UI.Managers.Stone;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -13,9 +16,9 @@ public class UI_GameField extends JPanel implements MouseListener {
 	private int _windowSizeY;
 	private int _verLength;
 	private int _horLength;
-	private boolean[][] _occupiedFields;
 	private ArrayList<Rectangle> _rects = new ArrayList<>();
-
+	private ArrayList<Stone> _stones = new ArrayList<>();
+	private Player _player;
 
 	public UI_GameField(){
 		addMouseListener(this);
@@ -33,20 +36,9 @@ public class UI_GameField extends JPanel implements MouseListener {
 		_horLength = (int) Math.floor((_windowSizeY - 150 + _horFieldAmount)/_horFieldAmount);
 
 		setBackground(Color.orange);
-		printEdges(g,_verLength,_horLength,defaultGap);
 		printHorLines(g,_verLength,_horLength,defaultGap);
 		printVerLines(g,_verLength,_horLength,defaultGap);
-
-	}
-	
-	private void printEdges(Graphics g,int verLength,int horLength, int defaultGap) {
-
-		
-		g.drawLine(defaultGap,defaultGap, defaultGap + verLength * _verFieldAmount,defaultGap);
-		g.drawLine(defaultGap + verLength * _verFieldAmount, defaultGap,defaultGap + verLength * _verFieldAmount, defaultGap + horLength * _horFieldAmount);
-		g.drawLine(defaultGap, defaultGap,defaultGap, defaultGap + horLength * _horFieldAmount);
-		g.drawLine(defaultGap ,defaultGap + horLength * _horFieldAmount, defaultGap + verLength * _verFieldAmount, defaultGap + horLength * _horFieldAmount);
-		
+		printStones(g);
 	}
 	
 	private void printHorLines(Graphics g,int verLength, int horLength, int defaultGap) {
@@ -72,23 +64,31 @@ public class UI_GameField extends JPanel implements MouseListener {
 				int[] pickedField = new int[4];
 				pickedField[0] = (rect.x)/_verLength + 1;
 				pickedField[1] = (rect.y)/_horLength + 1;
-				//System.out.println(pickedField[0] + "    " + pickedField[1]);
+				pickedField[2] = rect.x;
+				pickedField[3] = rect.y;
 				return pickedField;
 			}
 		}
 		return null;
 	}
 
-	public void printStoneOnConcreteField(String colour, int fieldX, int fieldY){
-		if(colour.equals("black")){
-
-		}
-		else if(colour.equals("white")){
-
+	public void printStones(Graphics g){
+		for(Stone _stone : _stones){
+			switch (_stone.get_stoneColour()){
+				case "black":
+					g.setColor(Color.BLACK);
+					g.fillOval(_stone.get_x() * _verLength + 1,_stone.get_y() *_horLength + 1,_stone.get_width(),_stone.get_height());
+				case "white":
+					g.setColor(Color.white);
+					g.fillOval(_stone.get_x()  *_verLength + 1,_stone.get_y()  * _horLength + 1,_stone.get_width(),_stone.get_height());
+			}
 		}
 	}
 
-	
+	public void addStoneToList(String colour, int fieldX, int fieldY){
+			_stones.add(new Stone(fieldX,fieldY,_verLength/2,_horLength/2,colour));
+	}
+
 	public static GameFieldBuilder builder() {
 	    return new GameFieldBuilder();
 	}
@@ -100,11 +100,12 @@ public class UI_GameField extends JPanel implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent mouseEvent) {
-		boolean canMove = true;
-		if(canMove){
-			int[] pickedField = whichFieldWasPicked(mouseEvent.getX(),mouseEvent.getY());
-			printStoneOnConcreteField("black",mouseEvent.getX(),mouseEvent.getY());
-		}
+		int[] pickedField = whichFieldWasPicked(mouseEvent.getX(),mouseEvent.getY());
+		String position = "" + pickedField[0] + ";" + pickedField[1];
+		System.out.println(position + _stones.size());
+		_player.move(position);
+
+		repaint();
 
 	}
 
@@ -122,13 +123,20 @@ public class UI_GameField extends JPanel implements MouseListener {
 	public void mouseExited(MouseEvent mouseEvent) {
 
 	}
+	public int getVerFieldAmount(){
+		return this._verFieldAmount;
+	}
+
+	public int getHorFieldAmount(){
+		return this._horFieldAmount;
+	}
 
 	public static final class GameFieldBuilder{
 		private int _verFieldAmount;
 		private int _horFieldAmount;
 		private int _windowSizeX;
 		private int _windowSizeY;
-		private boolean[][] _occupiedFields;
+		private Player _player;
 		
 		public GameFieldBuilder verFieldAmount(int verFieldAmount) {
 			this._verFieldAmount = verFieldAmount;
@@ -149,6 +157,10 @@ public class UI_GameField extends JPanel implements MouseListener {
 			this._windowSizeY = windowSizeY;
 			return this;
 		}
+		public GameFieldBuilder player(Player player) {
+			this._player = player;
+			return this;
+		}
 
 		public UI_GameField buildGameField() {
 			UI_GameField gameField = new UI_GameField();
@@ -157,7 +169,7 @@ public class UI_GameField extends JPanel implements MouseListener {
 			gameField._horFieldAmount = this._horFieldAmount;
 			gameField._windowSizeX = this._windowSizeX;
 			gameField._windowSizeY = this._windowSizeY;
-			gameField._occupiedFields = new boolean[_verFieldAmount][_horFieldAmount];
+			gameField._player = this._player;
 			
 			return gameField;
 		}

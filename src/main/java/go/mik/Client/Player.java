@@ -11,12 +11,6 @@ public class Player implements Client {
     private Scanner input;
     private PrintWriter output;
     private UIWindow _gameWindow;
-    private _playerColour pickedColour;
-
-    private enum _playerColour {
-        BLACK,
-        WHITE
-    }
 
     public Player(String nickName, String serverAddress, int socketPort) throws Exception {
         this.nickName = nickName;
@@ -39,17 +33,12 @@ public class Player implements Client {
                 response = input.nextLine();
                 System.out.println(response);
 
-                if (response.startsWith("SET_COLOR:")) {
-                    if(response.contains("white")){
-                        setColor("white");
-                    }
-                    else if(response.contains("black")) {
-                        setColor("black");
-                    }
-                } else if (response.startsWith("CHAT:")) {
+               if (response.startsWith("CHAT:")) {
                     response = response.replaceFirst("CHAT:", "");
                     this.sendToChat(response);
                 } else if (response.startsWith("GAME:")) {
+                   response = response.replaceFirst("GAME:", "");
+                   this.setStones(response);
                     // UI.setStones <= response // thread na ui ktory przekazuje response albo parsuje i przekazuje response // może tak zrobimy
                 }
             }
@@ -68,30 +57,37 @@ public class Player implements Client {
     }
 
     @Override
-    public void setColor(String color) {
-        switch(color) {
-            case "black":
-                this.pickedColour = _playerColour.BLACK;
-                break;
-            case "white":
-                this.pickedColour = _playerColour.WHITE;
-                break;
-        }
-    }
-
-    @Override
-    public void setStones(String gameSet) {
-
-    }
-
-    @Override
     public void sendToOpponentChat(String message) {
         this.output.println(message);
     }
 
     @Override
+    //wysylanie z ui do servera info o probie polozenia kloca || Splitter ---> ";"
     public void move(String position) {
+        this.output.println("MOVE:" + position);
+        /*setStones("wwbwooooooooooooooo" +
+                "oooooooooooooooooooo" +  "oooooooooooooooooooo" +  "oooooooooooooooooooo"
+                +  "oooooooooooooooooooo" +  "oooooooooooooooooooo" +  "oooooooooooooooooooo"
+                +  "oooooooooooooooooooo" +  "oooooooooooooooooooo" +  "oooooooooooooooooooo"
+                +  "oooooooooooooooooooo" +  "oooooooooooooooooooo" +  "oooooooooooooooooooo"
+                +  "oooooooooooooooooooo" +  "oooooooooooooooooooo" +  "oooooooooooooooooooo"
+                +  "oooooooooooooooooooo" +  "oooooooooooooooooooo" +  "oooooooooooooooooooo");*/
+    }
 
+    @Override
+    //odbieranie z serwera mapy z polozeniem klockow
+    public void setStones(String gameSet) {
+        for(int i = 1; i <= _gameWindow.getUI_Field().getVerFieldAmount(); i++){
+            for(int j = 1; j <= _gameWindow.getUI_Field().getVerFieldAmount(); j++){
+                if(gameSet.charAt(i * j - 1) == 'b'){
+                    this._gameWindow.getUI_Field().addStoneToList("black",i,j);
+                }
+                else if(gameSet.charAt(i * j - 1) == 'w'){
+                    System.out.println("DZIALAAA");
+                    this._gameWindow.getUI_Field().addStoneToList("white",i,j);
+                }
+            }
+        }
     }
 
     @Override

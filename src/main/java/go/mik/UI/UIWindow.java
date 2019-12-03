@@ -16,7 +16,7 @@ import javax.swing.border.EmptyBorder;
 public class UIWindow extends JFrame implements ActionListener{
 	
 	private int _pickedSocketID;
-	private static UI_GameField _gameField;
+	private UI_GameField _gameField;
 	private ButtonController _buttonController;
 	private JButton _blackStoneBtn;
 	private JButton _surrenderBtn;
@@ -42,7 +42,7 @@ public class UIWindow extends JFrame implements ActionListener{
 	}
 	
 	private void createWindow() {
-		setResizable(false);
+		setResizable(true);
 		//setTitle("Go game");
 		setSize(1500, 1000);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -55,6 +55,7 @@ public class UIWindow extends JFrame implements ActionListener{
 				.horFieldAmount(horFieldAmount)
 				.windowSizeX(getWidth())
 				.windowSizeY(getHeight())
+				.player(this._player)
 				.buildGameField();
 
 		_gameField.repaint();
@@ -132,7 +133,9 @@ public class UIWindow extends JFrame implements ActionListener{
 	public void getMessageForChat(String message){
 		_chatBox.addMessageToChat(message);
 	}
-
+	public UI_GameField getUI_Field(){
+		return this._gameField;
+	}
 	@Override
 	public void actionPerformed(ActionEvent action) {
 		if(action.getSource() == this._blackStoneBtn) {

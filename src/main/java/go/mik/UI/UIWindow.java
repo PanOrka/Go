@@ -1,5 +1,6 @@
 package go.mik.UI;
 
+import go.mik.Client.Player;
 import go.mik.UI.Components.UI_Chat;
 import go.mik.UI.Components.UI_GameField;
 import go.mik.UI.Controllers.ButtonController;
@@ -15,7 +16,7 @@ import javax.swing.border.EmptyBorder;
 public class UIWindow extends JFrame implements ActionListener{
 	
 	private int _pickedSocketID;
-	private static UI_GameField _gameField;
+	private UI_GameField _gameField;
 	private ButtonController _buttonController;
 	private JButton _blackStoneBtn;
 	private JButton _surrenderBtn;
@@ -24,10 +25,13 @@ public class UIWindow extends JFrame implements ActionListener{
 	private JScrollPane _chatPanel;
 	private UI_Chat _chatBox;
 	private JTextField _inputForChat;
-	
-	public UIWindow(){
-		super();
-		takeInputForWindow();
+	private Player _player;
+	private final String _nickName;
+
+	public UIWindow(Player player, String nickName){
+		super("Go " + nickName);
+		this._nickName = nickName;
+		this._player = player;
 		createWindow();
 		createGameField(19,19);
 		initializeChat();
@@ -35,26 +39,11 @@ public class UIWindow extends JFrame implements ActionListener{
 		initializeChatAndButtonsPanel();
 		setVisible(true);
 
-		getMessageForChat("TESTXDDDDDDDDDDDDDD\n");
-		getMessageForChat("TEST2\n");
-		getMessageForChat("TEST3\n");
-	}
-	
-	private void takeInputForWindow() {
-		while(true) {
-			try {
-				_pickedSocketID = Integer.parseInt((JOptionPane.showInputDialog(this, "Do jakiego socketu chcesz sie polaczyc?")));
-				break;
-			}catch(NumberFormatException ex) {
-				JOptionPane.showMessageDialog(this,"Podales bledny format socketu");
-			}
-			
-		}
 	}
 	
 	private void createWindow() {
-		setResizable(false);
-		setTitle("Go game");
+		setResizable(true);
+		//setTitle("Go game");
 		setSize(1500, 1000);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setContentPane(_mainPanel);
@@ -66,6 +55,7 @@ public class UIWindow extends JFrame implements ActionListener{
 				.horFieldAmount(horFieldAmount)
 				.windowSizeX(getWidth())
 				.windowSizeY(getHeight())
+				.player(this._player)
 				.buildGameField();
 
 		_gameField.repaint();
@@ -89,17 +79,28 @@ public class UIWindow extends JFrame implements ActionListener{
 		c.gridy = 0;
 		c.weighty = 0;
 		_chatAndButtonsPanel.add(_chatPanel,c);
+
 		c.gridx = 0;
 		c.gridy = 1;
 		c.weighty = 0.2;
 		c.weightx = 1;
+		_inputForChat.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				_player.sendToOpponentChat("CHAT:" + _inputForChat.getText());
+				getMessageForChat(_nickName + ": " + _inputForChat.getText() + '\n');
+				_inputForChat.setText("");
+			}
+		});
 		_chatAndButtonsPanel.add(_inputForChat,c);
+
 		c.anchor = GridBagConstraints.CENTER;
 		c.gridx = 0;
 		c.gridy = 2;
 		c.weighty = 0;
 		c.weightx = 1;
 		_chatAndButtonsPanel.add(_blackStoneBtn,c);
+
 		c.gridx = 0;
 		c.gridy = 3;
 		c.weighty = 0.8;
@@ -132,8 +133,9 @@ public class UIWindow extends JFrame implements ActionListener{
 	public void getMessageForChat(String message){
 		_chatBox.addMessageToChat(message);
 	}
-
-
+	public UI_GameField getUI_Field(){
+		return this._gameField;
+	}
 	@Override
 	public void actionPerformed(ActionEvent action) {
 		if(action.getSource() == this._blackStoneBtn) {

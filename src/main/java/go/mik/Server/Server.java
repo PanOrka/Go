@@ -20,8 +20,8 @@ public class Server {
             ExecutorService pool = Executors.newFixedThreadPool(2);
 
             GameAdapter game = new GameAdapter();
-            pool.execute(game.new Player(listener.accept(), 'B'));
-            pool.execute(game.new Player(listener.accept(), 'W'));
+            pool.execute(game.new Player(listener.accept(), 'b'));
+            pool.execute(game.new Player(listener.accept(), 'w'));
         } catch(IOException ioException) {
             System.err.println(ioException.getMessage());
         }

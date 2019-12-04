@@ -31,7 +31,7 @@ public class Player implements Client {
             String response;
             while (input.hasNextLine()) {
                 response = input.nextLine();
-                System.out.println(response);
+                //System.out.println(response);
 
                if (response.startsWith("CHAT:")) {
                     response = response.replaceFirst("CHAT:", "");
@@ -83,15 +83,16 @@ public class Player implements Client {
                 String[] str = gameSet.split(";");
 
                 if(str[2].equals("b")){
-                    this._gameWindow.getUI_Field().addStoneToList("black", Integer.parseInt(str[0]), Integer.parseInt(str[1]));
+                    this._gameWindow.getUI_Field().addStoneToList("black", Integer.parseInt(str[0])+1, Integer.parseInt(str[1])+1);
                 }else if(str[2].equals("w")){
-                    this._gameWindow.getUI_Field().addStoneToList("white", Integer.parseInt(str[0]), Integer.parseInt(str[1]));
+                    this._gameWindow.getUI_Field().addStoneToList("white", Integer.parseInt(str[0])+1, Integer.parseInt(str[1])+1);
                 }
             }catch(NumberFormatException ex){
                 System.err.println(ex.getMessage());
             }
         }
         else {
+            _gameWindow.getUI_Field().clearStoneList();
             for (int i = 1; i <= _gameWindow.getUI_Field().getVerFieldAmount(); i++) {
                 for (int j = 0; j <= _gameWindow.getUI_Field().getVerFieldAmount(); j++) {
 

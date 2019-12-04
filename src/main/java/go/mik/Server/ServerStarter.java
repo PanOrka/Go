@@ -12,14 +12,15 @@ public class ServerStarter {
 
     private ServerStarter() {
         this.initialize();
-        while(!this.start) {
+        //while(!this.start) {
             // WAIT FOR THREAD
-        }
+        //}
         this.server.start();
     }
 
     private void initialize() {
-        new Launcher(this);
+        //new Launcher(this);
+        this.serverInit(new Server(1111));
     }
 
     public void serverInit(Server server) {

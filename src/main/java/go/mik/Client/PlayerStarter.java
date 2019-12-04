@@ -12,14 +12,19 @@ public class PlayerStarter {
 
     private PlayerStarter() {
         this.initialize();
-        while(!this.start) {
+        //while(!this.start) {
             // WAIT FOR THREAD
-        }
+        //}
         this.client.start();
     }
 
     private void initialize() {
-        new Launcher(this);
+        //new Launcher(this);
+        try {
+            this.clientInit(new Player("test", "127.0.0.1", 1111));
+        } catch (Exception ex) {
+            // nothing
+        }
     }
 
     public void clientInit(Client client) {

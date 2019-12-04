@@ -9,6 +9,7 @@ abstract class Game {
 
     Game() {
         this.field = new Stone[19][19];
+        this.isEmpty = new boolean[4];
         this.setStones();
     }
 
@@ -28,50 +29,52 @@ abstract class Game {
             return "CHAT:This is occupied";
         }
 
+        this.field[x][y].isOccupied = this.actualColor;
+
         this.counter = 0;
         this.canPut = true;
         this.setFlags();
         if (x+1 < 19 && this.field[x+1][y].isOccupied == opponentColor) {
-            this.isEmpty[counter] = false;
+            this.isEmpty[this.counter] = false;
             this.checkBreath(x+1, y);
-            if (!this.isEmpty[counter]) {
+            if (!this.isEmpty[this.counter]) {
                 this.clearChecked();
                 this.canPut = false;
             }
-            counter++;
+            this.counter++;
         }
         this.setFlags();
-        if (x-1 >= 0 && this.field[x+1][y].isOccupied == opponentColor) {
-            this.isEmpty[counter] = false;
+        if (x-1 >= 0 && this.field[x-1][y].isOccupied == opponentColor) {
+            this.isEmpty[this.counter] = false;
             this.checkBreath(x-1, y);
-            if (!this.isEmpty[counter]) {
+            if (!this.isEmpty[this.counter]) {
                 this.clearChecked();
                 this.canPut = false;
             }
-            counter++;
+            this.counter++;
         }
         this.setFlags();
-        if (y+1 < 19 && this.field[x+1][y].isOccupied == opponentColor) {
-            this.isEmpty[counter] = false;
+        if (y+1 < 19 && this.field[x][y+1].isOccupied == opponentColor) {
+            this.isEmpty[this.counter] = false;
             this.checkBreath(x, y+1);
-            if (!this.isEmpty[counter]) {
+            if (!this.isEmpty[this.counter]) {
                 this.clearChecked();
                 this.canPut = false;
             }
-            counter++;
+            this.counter++;
         }
         this.setFlags();
-        if (y-1 >= 0 && this.field[x+1][y].isOccupied == opponentColor) {
-            this.isEmpty[counter] = false;
+        if (y-1 >= 0 && this.field[x][y-1].isOccupied == opponentColor) {
+            this.isEmpty[this.counter] = false;
             this.checkBreath(x, y-1);
-            if (!this.isEmpty[counter]) {
+            if (!this.isEmpty[this.counter]) {
                 this.clearChecked();
                 this.canPut = false;
             }
         }
 
         if (this.canPut) {
-            return "GAME:put";
+            return "GAME:put:" + x + ";" + y + ";" + this.actualColor;
         }
 
         return "GAME:" + parseField();
@@ -87,17 +90,21 @@ abstract class Game {
     }
 
     private void checkBreath(int x, int y) {
+        if (this.isEmpty[this.counter]) {
+            return;
+        }
+
         if (x+1 < 19 && this.field[x+1][y].isOccupied == 'o') {
-            this.isEmpty[counter] = true;
+            this.isEmpty[this.counter] = true;
             return;
         } else if (x-1 >= 0 && this.field[x-1][y].isOccupied == 'o') {
-            this.isEmpty[counter] = true;
+            this.isEmpty[this.counter] = true;
             return;
         } else if (y+1 < 19 && this.field[x][y+1].isOccupied == 'o') {
-            this.isEmpty[counter] = true;
+            this.isEmpty[this.counter] = true;
             return;
         } else if (y-1 >= 0 && this.field[x][y-1].isOccupied == 'o') {
-            this.isEmpty[counter] = true;
+            this.isEmpty[this.counter] = true;
             return;
         }
 
@@ -119,24 +126,26 @@ abstract class Game {
 
     private void clearChecked() {
         for (int i=0; i<19; i++) {
-            for (Stone stones : this.field[i]) {
-                stones.isOccupied = 'o';
+            for (int j=0; j<19; j++) {
+                if (this.field[i][j].wasChecked) {
+                    this.field[i][j].isOccupied = 'o';
+                }
             }
         }
     }
 
     private void setFlags() {
         for (int i=0; i<19; i++) {
-            for (Stone stones : this.field[i]) {
-                stones.wasChecked = false;
+            for (int j=0; j<19; j++) {
+                this.field[i][j].wasChecked = false;
             }
         }
     }
 
     private void setStones() {
         for (int i=0; i<19; i++) {
-            for (Stone stones : this.field[i]) {
-                stones = new Stone();
+            for (int j=0; j<19; j++) {
+                this.field[i][j] = new Stone();
             }
         }
     }
@@ -145,8 +154,8 @@ abstract class Game {
         String str = "";
         StringBuilder builder = new StringBuilder(str);
         for (int i=0; i<19; i++) {
-            for (Stone stones : this.field[i]) {
-                builder.append(stones.isOccupied);
+            for (int j=0; j<19; j++) {
+                builder.append(field[j][i].isOccupied); // ZMIENIC i -> j
             }
         }
         str = builder.toString();

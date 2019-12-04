@@ -65,27 +65,29 @@ public class Player implements Client {
     //wysylanie z ui do servera info o probie polozenia kloca || Splitter ---> ";"
     public void move(String position) {
         this.output.println("MOVE:" + position);
-        setStones("bbbbooooooooooooooo" +
-                "oooooooooooooooooooo" +  "oobboooooooooooooooo" +  "oooooooooooooooooooo"
+        setStones("bbbobbbbbbbbbbbbbbbb" +
+                "oooooooooooooooooooo" +  "oooooooooooooooooooo" +"bbooooooooooooooooob" +  "boooooooooooooooooob"
+                +  "oooooooooooooooooooo"+  "oooooooooooooooooooo" +  "boooooooooooooooooob"
                 +  "oooooooooooooooooooo" +  "oooooooooooooooooooo" +  "oooooooooooooooooooo"
                 +  "oooooooooooooooooooo" +  "oooooooooooooooooooo" +  "oooooooooooooooooooo"
                 +  "oooooooooooooooooooo" +  "oooooooooooooooooooo" +  "oooooooooooooooooooo"
-                +  "oooooooooooooooooooo" +  "oooooooooooooooooooo" +  "oooooooooooooooooooo"
-                +  "oooooooooooooooooooo" +  "oooooooooooooooooooo" +  "oooooooooooooooooooo");
+                + "oooooooooooooooooooo" +  "oooooooooooooooooooo" +  "ooooooooooooooooooob");
     }
 
     @Override
     //odbieranie z serwera mapy z polozeniem klockow
     public void setStones(String gameSet) {
-        for(int i = 1; i < _gameWindow.getUI_Field().getVerFieldAmount(); i++){
-            for(int j = 0; j < _gameWindow.getUI_Field().getVerFieldAmount(); j++){
-                if(gameSet.charAt(j +  _gameWindow.getUI_Field().getVerFieldAmount() * (i - 1)) == 'b'){
-                    this._gameWindow.getUI_Field().addStoneToList("black",i,j);
-                    System.out.println("DZIALAAA :" + (j +  _gameWindow.getUI_Field().getVerFieldAmount() * ( i - 1)) + "\n");
+       // System.out.println(gameSet.charAt(0) + "ilosc pol:" + _gameWindow.getUI_Field().getVerFieldAmount());
+        for(int i = 1; i <= _gameWindow.getUI_Field().getVerFieldAmount(); i++){
+            for(int j = 0; j <= _gameWindow.getUI_Field().getVerFieldAmount(); j++){
+               // System.out.println("i :" + i + "j:" + j);
+                if(gameSet.charAt(j +  (_gameWindow.getUI_Field().getVerFieldAmount() + 1 )* (i - 1)) == 'b'){
+                    this._gameWindow.getUI_Field().addStoneToList("black",j + 1,i);
+                   // System.out.println("DZIALAAA/B :" + (j + _gameWindow.getUI_Field().getVerFieldAmount() * ( i - 1)) + "\n");
                 }
-                else if(gameSet.charAt(j +  _gameWindow.getUI_Field().getVerFieldAmount() * ( i - 1)) == 'w'){
-                    System.out.println("DZIALAAA :" + (j +  _gameWindow.getUI_Field().getVerFieldAmount() * ( i - 1)) + "\n");
-                    this._gameWindow.getUI_Field().addStoneToList("white",i,j);
+                else if(gameSet.charAt(j +  (_gameWindow.getUI_Field().getVerFieldAmount() + 1 )* ( i - 1)) == 'w'){
+                   // System.out.println("DZIALAAA :" + (j + _gameWindow.getUI_Field().getVerFieldAmount() * ( i - 1)) + "\n");
+                    this._gameWindow.getUI_Field().addStoneToList("white",j + 1, i);
                 }
             }
         }

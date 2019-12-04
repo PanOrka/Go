@@ -77,10 +77,10 @@ public class UI_GameField extends JPanel implements MouseListener {
 			switch (_stone.get_stoneColour()){
 				case "black":
 					g.setColor(Color.BLACK);
-					g.fillOval(_stone.get_x() * _verLength - _verLength,_stone.get_y() * _horLength - _horLength,_stone.get_width(),_stone.get_height());
+					g.fillOval((_stone.get_x() - 1) * _verLength + 50 - _stone.get_width()/2,(_stone.get_y() - 1) * _horLength + 50 - _stone.get_height()/2,_stone.get_width(),_stone.get_height());
 				case "white":
 					g.setColor(Color.white);
-					g.fillOval(_stone.get_x() * _verLength - _verLength,_stone.get_y()* _horLength - _horLength, _stone.get_width(),_stone.get_height());
+					g.fillOval((_stone.get_x() - 1 ) * _verLength + 50 - _stone.get_width()/2 ,(_stone.get_y() - 1) * _horLength  + 50 - _stone.get_height()/2, _stone.get_width(),_stone.get_height());
 			}
 		}
 	}

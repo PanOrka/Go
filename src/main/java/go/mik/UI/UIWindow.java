@@ -42,7 +42,7 @@ public class UIWindow extends JFrame implements ActionListener{
 	}
 	
 	private void createWindow() {
-		setResizable(true);
+		setResizable(false);
 		//setTitle("Go game");
 		setSize(1500, 1000);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);

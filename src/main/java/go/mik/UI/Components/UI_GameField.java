@@ -77,16 +77,16 @@ public class UI_GameField extends JPanel implements MouseListener {
 			switch (_stone.get_stoneColour()){
 				case "black":
 					g.setColor(Color.BLACK);
-					g.fillOval(_stone.get_x() * _verLength + 1,_stone.get_y() *_horLength + 1,_stone.get_width(),_stone.get_height());
+					g.fillOval(_stone.get_x() * _verLength - _verLength,_stone.get_y() * _horLength - _horLength,_stone.get_width(),_stone.get_height());
 				case "white":
 					g.setColor(Color.white);
-					g.fillOval(_stone.get_x()  *_verLength + 1,_stone.get_y()  * _horLength + 1,_stone.get_width(),_stone.get_height());
+					g.fillOval(_stone.get_x() * _verLength - _verLength,_stone.get_y()* _horLength - _horLength, _stone.get_width(),_stone.get_height());
 			}
 		}
 	}
 
 	public void addStoneToList(String colour, int fieldX, int fieldY){
-			_stones.add(new Stone(fieldX,fieldY,_verLength/2,_horLength/2,colour));
+		_stones.add(new Stone(fieldX,fieldY,_verLength/2,_horLength/2,colour));
 	}
 
 	public static GameFieldBuilder builder() {
@@ -101,17 +101,28 @@ public class UI_GameField extends JPanel implements MouseListener {
 	@Override
 	public void mousePressed(MouseEvent mouseEvent) {
 		int[] pickedField = whichFieldWasPicked(mouseEvent.getX(),mouseEvent.getY());
-		String position = "" + pickedField[0] + ";" + pickedField[1];
-		System.out.println(position + _stones.size());
-		_player.move(position);
+		boolean canPrintThere = true;
+		if(pickedField != null){
+			for(Stone _stone : _stones){
+				if(_stone.get_x() == pickedField[0] && _stone.get_y() == pickedField[1]){
+					canPrintThere = false;
+					break;
+				}
+			}
 
-		repaint();
+			if(canPrintThere){
+				String position = "" + pickedField[0] + ";" + pickedField[1];
+				System.out.println(position + "   " + _stones.size());
+				_player.move(position);
+				//addStoneToList("white",pickedField[2],pickedField[3]);
+				repaint();
+			}
+		}
 
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent mouseEvent) {
-
 	}
 
 	@Override

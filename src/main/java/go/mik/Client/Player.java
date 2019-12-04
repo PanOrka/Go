@@ -65,25 +65,26 @@ public class Player implements Client {
     //wysylanie z ui do servera info o probie polozenia kloca || Splitter ---> ";"
     public void move(String position) {
         this.output.println("MOVE:" + position);
-        /*setStones("wwbwooooooooooooooo" +
-                "oooooooooooooooooooo" +  "oooooooooooooooooooo" +  "oooooooooooooooooooo"
+        setStones("bbbbooooooooooooooo" +
+                "oooooooooooooooooooo" +  "oobboooooooooooooooo" +  "oooooooooooooooooooo"
                 +  "oooooooooooooooooooo" +  "oooooooooooooooooooo" +  "oooooooooooooooooooo"
                 +  "oooooooooooooooooooo" +  "oooooooooooooooooooo" +  "oooooooooooooooooooo"
                 +  "oooooooooooooooooooo" +  "oooooooooooooooooooo" +  "oooooooooooooooooooo"
                 +  "oooooooooooooooooooo" +  "oooooooooooooooooooo" +  "oooooooooooooooooooo"
-                +  "oooooooooooooooooooo" +  "oooooooooooooooooooo" +  "oooooooooooooooooooo");*/
+                +  "oooooooooooooooooooo" +  "oooooooooooooooooooo" +  "oooooooooooooooooooo");
     }
 
     @Override
     //odbieranie z serwera mapy z polozeniem klockow
     public void setStones(String gameSet) {
-        for(int i = 1; i <= _gameWindow.getUI_Field().getVerFieldAmount(); i++){
-            for(int j = 1; j <= _gameWindow.getUI_Field().getVerFieldAmount(); j++){
-                if(gameSet.charAt(i * j - 1) == 'b'){
+        for(int i = 1; i < _gameWindow.getUI_Field().getVerFieldAmount(); i++){
+            for(int j = 0; j < _gameWindow.getUI_Field().getVerFieldAmount(); j++){
+                if(gameSet.charAt(j +  _gameWindow.getUI_Field().getVerFieldAmount() * (i - 1)) == 'b'){
                     this._gameWindow.getUI_Field().addStoneToList("black",i,j);
+                    System.out.println("DZIALAAA :" + (j +  _gameWindow.getUI_Field().getVerFieldAmount() * ( i - 1)) + "\n");
                 }
-                else if(gameSet.charAt(i * j - 1) == 'w'){
-                    System.out.println("DZIALAAA");
+                else if(gameSet.charAt(j +  _gameWindow.getUI_Field().getVerFieldAmount() * ( i - 1)) == 'w'){
+                    System.out.println("DZIALAAA :" + (j +  _gameWindow.getUI_Field().getVerFieldAmount() * ( i - 1)) + "\n");
                     this._gameWindow.getUI_Field().addStoneToList("white",i,j);
                 }
             }

@@ -43,7 +43,7 @@ public class UI_GameField extends JPanel implements MouseListener {
 	
 	private void printHorLines(Graphics g,int verLength, int horLength, int defaultGap) {
 		for(int i = 0; i <= _verFieldAmount; i++) {
-			g.drawLine(defaultGap + verLength * i , defaultGap,defaultGap + verLength * i,defaultGap + horLength * _horFieldAmount);
+			g.drawLine(defaultGap + verLength * i , defaultGap,defaultGap + verLength * i,defaultGap + horLength * _horFieldAmount );
 			for(int j = 0; j <= _horFieldAmount; j++){
 				_rects.add(new Rectangle(defaultGap + verLength * i - verLength/4,defaultGap + horLength * j - horLength/4,(verLength/2),(horLength/2)));
 				//g.drawRect(defaultGap + verLength * i - verLength/4,defaultGap + horLength * j - horLength/4,(verLength/2),(horLength/2));
@@ -73,20 +73,22 @@ public class UI_GameField extends JPanel implements MouseListener {
 	}
 
 	public void printStones(Graphics g){
+		Graphics2D g2d = (Graphics2D) g;
 		for(Stone _stone : _stones){
-			switch (_stone.get_stoneColour()){
-				case "black":
-					g.setColor(Color.BLACK);
-					g.fillOval((_stone.get_x() - 1) * _verLength + 50 - _stone.get_width()/2,(_stone.get_y() - 1) * _horLength + 50 - _stone.get_height()/2,_stone.get_width(),_stone.get_height());
-				case "white":
-					g.setColor(Color.white);
-					g.fillOval((_stone.get_x() - 1 ) * _verLength + 50 - _stone.get_width()/2 ,(_stone.get_y() - 1) * _horLength  + 50 - _stone.get_height()/2, _stone.get_width(),_stone.get_height());
+			if(_stone.get_stoneColour().equals("black")) {
+				g2d.setColor(Color.BLACK);
+				g2d.fillOval((_stone.get_x() - 1) * _verLength + 50 - _stone.get_width()/2,(_stone.get_y() - 1) * _horLength + 50 - _stone.get_height()/2,_stone.get_width(),_stone.get_height());
+			}
+			else if(_stone.get_stoneColour().equals("white")){
+					g2d.setColor(Color.WHITE);
+					g2d.fillOval((_stone.get_x() - 1 ) * _verLength + 50 - _stone.get_width()/2 ,(_stone.get_y() - 1) * _horLength  + 50 - _stone.get_height()/2, _stone.get_width(),_stone.get_height());
 			}
 		}
 	}
 
 	public void addStoneToList(String colour, int fieldX, int fieldY){
 		_stones.add(new Stone(fieldX,fieldY,_verLength/2,_horLength/2,colour));
+		repaint();
 	}
 
 	public static GameFieldBuilder builder() {
@@ -102,20 +104,18 @@ public class UI_GameField extends JPanel implements MouseListener {
 	public void mousePressed(MouseEvent mouseEvent) {
 		int[] pickedField = whichFieldWasPicked(mouseEvent.getX(),mouseEvent.getY());
 		boolean canPrintThere = true;
+
 		if(pickedField != null){
-			for(Stone _stone : _stones){
+			/*for(Stone _stone : _stones){
 				if(_stone.get_x() == pickedField[0] && _stone.get_y() == pickedField[1]){
 					canPrintThere = false;
 					break;
 				}
-			}
+			}*/
 
 			if(canPrintThere){
 				String position = "" + pickedField[0] + ";" + pickedField[1];
-				System.out.println(position + "   " + _stones.size());
 				_player.move(position);
-				//addStoneToList("white",pickedField[2],pickedField[3]);
-				repaint();
 			}
 		}
 
@@ -150,12 +150,12 @@ public class UI_GameField extends JPanel implements MouseListener {
 		private Player _player;
 		
 		public GameFieldBuilder verFieldAmount(int verFieldAmount) {
-			this._verFieldAmount = verFieldAmount;
+			this._verFieldAmount = verFieldAmount - 1;
 			return this;
 		}
 		
 		public GameFieldBuilder horFieldAmount(int horFieldAmount) {
-			this._horFieldAmount = horFieldAmount;
+			this._horFieldAmount = horFieldAmount - 1;
 			return this;
 		}
 		

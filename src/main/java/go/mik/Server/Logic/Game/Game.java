@@ -1,6 +1,6 @@
-package go.mik.Server.Logic;
+package go.mik.Server.Logic.Game;
 
-abstract class Game {
+class Game {
     private final Stone[][] field;
     private char actualColor, opponentColor;
     private boolean[] isEmpty;
@@ -13,7 +13,7 @@ abstract class Game {
         this.setStones();
     }
 
-    synchronized String move(String command, char color) {
+    String move(String command, char color) {
         if (color == 'b') {
             this.actualColor = 'b';
             this.opponentColor = 'w';

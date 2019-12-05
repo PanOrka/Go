@@ -1,4 +1,4 @@
-package go.mik.Server.Logic;
+package go.mik.Server.Logic.Game;
 
 class Stone {
     char isOccupied;

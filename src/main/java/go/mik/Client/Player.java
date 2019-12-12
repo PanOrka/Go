@@ -1,5 +1,6 @@
 package go.mik.Client;
 
+import go.mik.UI.ABS_UIWindow;
 import go.mik.UI.UIWindow;
 
 import java.io.PrintWriter;
@@ -25,6 +26,7 @@ public class Player implements Client {
     @Override
     public void start() {
         System.out.println("Player is Running");
+
         try {
             output.println(nickName);
 

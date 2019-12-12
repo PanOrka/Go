@@ -13,23 +13,13 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 // ZABAWA
-public class UIWindow extends JFrame implements ActionListener{
-	
-	private int _pickedSocketID;
-	private UI_GameField _gameField;
-	private ButtonController _buttonController;
-	private JButton _blackStoneBtn;
-	private JButton _surrenderBtn;
+public class UIWindow extends ABS_UIWindow{
+
 	private JPanel _mainPanel = new JPanel(new BorderLayout(2,2));
 	private JPanel _chatAndButtonsPanel = new JPanel(new GridBagLayout());
 	private JScrollPane _chatPanel;
-	private UI_Chat _chatBox;
-	private JTextField _inputForChat;
-	private Player _player;
-	private final String _nickName;
 
 	public UIWindow(Player player, String nickName){
-		super("Go " + nickName);
 		this._nickName = nickName;
 		this._player = player;
 		createWindow();
@@ -38,18 +28,10 @@ public class UIWindow extends JFrame implements ActionListener{
 		initializeButtons();
 		initializeChatAndButtonsPanel();
 		setVisible(true);
+	}
 
-	}
-	
-	private void createWindow() {
-		setResizable(false);
-		//setTitle("Go game");
-		setSize(1500, 1000);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setContentPane(_mainPanel);
-	}
-	
-	private void createGameField(int verFieldAmount, int horFieldAmount) {
+	@Override
+	void createGameField(int verFieldAmount, int horFieldAmount) {
 		_gameField = UI_GameField.builder()
 				.verFieldAmount(verFieldAmount)
 				.horFieldAmount(horFieldAmount)
@@ -61,10 +43,19 @@ public class UIWindow extends JFrame implements ActionListener{
 		_gameField.repaint();
 		_gameField.setBorder(new EmptyBorder(0,0,0,50));
 		_gameField.setBackground(Color.WHITE);
-
 		_mainPanel.add(_gameField, BorderLayout.CENTER);
-
 	}
+
+	private void createWindow() {
+		setResizable(false);
+		setTitle("Go " + _nickName);
+		setSize(1500, 1000);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setContentPane(_mainPanel);
+	}
+
+
+
 	private void initializeChatAndButtonsPanel(){
 		GridBagConstraints c = new GridBagConstraints();
 
@@ -117,7 +108,6 @@ public class UIWindow extends JFrame implements ActionListener{
 		_blackStoneBtn.setPreferredSize(new Dimension(100,50));
 
 		_surrenderBtn = new JButton("SURRENDER");
-		//_surrenderBtn.setIcon(new ImageIcon(getClass().getResource("/kamien.png")));
 		_surrenderBtn.setBackground(Color.white);
 		_surrenderBtn.setBorderPainted(false);
 		_surrenderBtn.setPreferredSize(new Dimension(150,50));
@@ -130,12 +120,6 @@ public class UIWindow extends JFrame implements ActionListener{
 		_inputForChat.setPreferredSize(new Dimension(350, 50));
 	}
 
-	public void getMessageForChat(String message){
-		_chatBox.addMessageToChat(message);
-	}
-	public UI_GameField getUI_Field(){
-		return this._gameField;
-	}
 	@Override
 	public void actionPerformed(ActionEvent action) {
 		if(action.getSource() == this._blackStoneBtn) {

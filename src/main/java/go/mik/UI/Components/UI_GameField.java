@@ -136,6 +136,9 @@ public class UI_GameField extends JPanel implements MouseListener {
     public void mouseExited(MouseEvent mouseEvent) {
 
     }
+    public ArrayList<Stone> get_stones(){
+        return this._stones;
+    }
     public int getVerFieldAmount(){
         return this._verFieldAmount;
     }

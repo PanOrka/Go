@@ -1,9 +1,11 @@
 package go.mik.Client.Launcher;
 
-import go.mik.Client.ServerConnector;
+
 import go.mik.Client.Player;
 import go.mik.Client.PlayerStarter;
+import go.mik.Client.ServerConnector;
 
+import javax.naming.InvalidNameException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -27,8 +29,8 @@ public class Launcher extends JFrame implements ActionListener {
     private void setUI() {
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setLayout(new GridLayout(4, 2));
-        this.setSize(new Dimension(300, 150));
+        this.setLayout(new GridLayout(2, 2));
+        this.setSize(new Dimension(300, 100));
 
         this.add(new JLabel("Nick", SwingConstants.CENTER));
         this.add(this.nickName);
@@ -40,29 +42,27 @@ public class Launcher extends JFrame implements ActionListener {
         this.add(this.playerPlayButton);
     }
 
-    private void setPlayer() {
+    private void setPlayer(boolean playWithBot) {
         try {
             String nickName = this.nickName.getText();
-            ServerConnector player = new Player(nickName, "127.0.0.1", 1111);
+            if (nickName.equals("")) {
+                throw new InvalidNameException();
+            }
 
-            this.playerStarter.clientInit(player);
+            ServerConnector serverConnector = new Player(nickName, "127.0.0.1", 1111);
+            this.playerStarter.clientInit(serverConnector, playWithBot);
             this.dispose();
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
-    }
-
-    private void setBot() {
-        this.playerStarter.setPlayWithBot(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == this.playerPlayButton) {
-            this.setPlayer();
+            this.setPlayer(false);
         } else if (e.getSource() == this.botPlayButton) {
-            this.setBot();
-            this.setPlayer();
+            this.setPlayer(true);
         }
     }
 }

@@ -1,5 +1,6 @@
 package go.mik.Server;
 
+import go.mik.Bot.Bot;
 import go.mik.Server.Logic.Game.GameSystem;
 import go.mik.Server.Logic.Game.GameSystemInterface;
 import go.mik.Server.Logic.PlayerConnector.BotPlayer;
@@ -37,11 +38,13 @@ class Server {
                         System.out.println("New Player vs Bot Game");
                         GameSystemInterface gameSystem = new GameSystem();
 
-                        response = response.replaceFirst("PLAY:PVP:", "");
+                        response = response.replaceFirst("PLAY:BOT:", "");
                         PlayerConnector playerConnector1 = new Player(connectorSocket, response, 'b', gameSystem);
                         pool.execute(playerConnector1);
 
-                        PlayerConnector playerConnector2 = new BotPlayer();
+                        Bot.setBot(socketPort);
+                        connectorSocket = listener.accept();
+                        PlayerConnector playerConnector2 = new BotPlayer(connectorSocket, 'w', gameSystem);
                         pool.execute(playerConnector2);
                         break;
                     } else if (response.startsWith("PLAY:PVP")) {

@@ -8,13 +8,14 @@ import java.util.Scanner;
 
 public class Player implements ServerConnector {
     private String nickName;
+    private Socket socket;
     private Scanner input;
     private PrintWriter output;
     private UIWindow _gameWindow;
 
     public Player(String nickName, String serverAddress, int socketPort) throws Exception {
         this.nickName = nickName;
-        Socket socket = new Socket(serverAddress, socketPort);
+        this.socket = new Socket(serverAddress, socketPort);
         this.input = new Scanner(socket.getInputStream());
         this.output = new PrintWriter(socket.getOutputStream(), true);
         this._gameWindow = new UIWindow(this, nickName);
@@ -24,7 +25,6 @@ public class Player implements ServerConnector {
     public void start(boolean playWithBot) {
         System.out.println("Player is Running");
         try {
-
             if (playWithBot) {
                 output.println("PLAY:BOT:" + nickName);
             } else {

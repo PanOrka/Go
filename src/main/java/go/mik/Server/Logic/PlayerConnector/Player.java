@@ -12,8 +12,9 @@ public class Player extends PlayerConnector {
     private Scanner input;
     private PrintWriter output;
 
-    public Player(Socket socket, char color, GameSystemInterface gameSystemInterface) {
+    public Player(Socket socket, String nickName, char color, GameSystemInterface gameSystemInterface) {
         this.socket = socket;
+        this.nickName = nickName;
         this.color = color;
         this.gameSystemInterface = gameSystemInterface;
     }
@@ -42,9 +43,7 @@ public class Player extends PlayerConnector {
         this.input = new Scanner(this.socket.getInputStream());
         this.output = new PrintWriter(this.socket.getOutputStream(), true);
 
-        this.nickName = this.input.nextLine();
-
-        this.output.println("CHAT:WELCOME " + this.nickName);
+        this.takeMsg("CHAT:WELCOME " + this.nickName);
         if (color == 'b') {
             this.gameSystemInterface.setCurrentPlayer(this);
             this.takeMsg("CHAT:You are playing as black");

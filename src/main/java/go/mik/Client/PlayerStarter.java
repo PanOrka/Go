@@ -1,10 +1,8 @@
 package go.mik.Client;
 
-import go.mik.Client.Launcher.Launcher;
-
 public class PlayerStarter {
-    private Client client;
-    private volatile boolean start = false;
+    private ServerConnector serverConnector;
+    private boolean playWithBot = false;
 
     public static void main(String[] args) {
         new PlayerStarter();
@@ -12,10 +10,7 @@ public class PlayerStarter {
 
     private PlayerStarter() {
         this.initialize();
-        //while(!this.start) {
-            // WAIT FOR THREAD
-        //}
-        this.client.start();
+        this.serverConnector.start(playWithBot);
     }
 
     private void initialize() {
@@ -27,8 +22,11 @@ public class PlayerStarter {
         }
     }
 
-    public void clientInit(Client client) {
-        this.client = client;
-        this.start = true;
+    public void clientInit(ServerConnector serverConnector) {
+        this.serverConnector = serverConnector;
+    }
+
+    public void setPlayWithBot(boolean playWithBot) {
+        this.playWithBot = playWithBot;
     }
 }

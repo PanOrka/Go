@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class Player implements Client {
+public class Player implements ServerConnector {
     private String nickName;
     private Scanner input;
     private PrintWriter output;
@@ -18,20 +18,22 @@ public class Player implements Client {
         this.input = new Scanner(socket.getInputStream());
         this.output = new PrintWriter(socket.getOutputStream(), true);
         this._gameWindow = new UIWindow(this, nickName);
-
-        //new TestSender(this.nickName, this); // TEST OF SENDING CLIENT -> SERVER -> CLIENT
     }
 
     @Override
-    public void start() {
+    public void start(boolean playWithBot) {
         System.out.println("Player is Running");
         try {
-            output.println(nickName);
+
+            if (playWithBot) {
+                output.println("PLAY:BOT:" + nickName);
+            } else {
+                output.println("PLAY:PVP:" + nickName);
+            }
 
             String response;
             while (input.hasNextLine()) {
                 response = input.nextLine();
-                //System.out.println(response);
 
                if (response.startsWith("CHAT:")) {
                     response = response.replaceFirst("CHAT:", "");
@@ -39,7 +41,7 @@ public class Player implements Client {
                 } else if (response.startsWith("GAME:")) {
                    response = response.replaceFirst("GAME:", "");
                    this.setStones(response);
-                    // UI.setStones <= response // thread na ui ktory przekazuje response albo parsuje i przekazuje response // może tak zrobimy
+                    // UI.setStones <= response
                 }
             }
         } catch(Exception ex) {
@@ -65,13 +67,6 @@ public class Player implements Client {
     //wysylanie z ui do servera info o probie polozenia kloca || Splitter ---> ";"
     public void move(String position) {
         this.output.println("MOVE:" + position);
-        /*setStones("bwwobbbbbbbbbbbbbbb" +
-                "ooooooooooooooooooo" +  "ooooooooooooooooooo" +"bboooooooooooooooob" +  "booooooooooooooooob"
-                +  "ooooooooooooooooooo"+  "ooooooooooooooooooo" +  "booooooooooooooooob"
-                +  "ooooooooooooooooooo" +  "ooooooooooooooooooo" +  "ooooooooooooooooooo"
-                +  "ooooooooooooooooooo" +  "ooooooooooooooooooo" +  "ooooooooooooooooooo"
-                +  "ooooooooooooooooooo" +  "ooooooooooooooooooo" +  "ooooooooooooooooooo"
-                + "ooooooooooooooooooo" +  "ooooooooooooooooooo" +  "oooooooooooooooooob");*/
     }
 
     @Override
@@ -107,10 +102,5 @@ public class Player implements Client {
                 }
             }
         }
-    }
-
-    @Override
-    public void quit() {
-
     }
 }

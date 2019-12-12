@@ -37,6 +37,9 @@ public class UIWindow extends ABS_UIWindow{
 				.horFieldAmount(horFieldAmount)
 				.windowSizeX(getWidth())
 				.windowSizeY(getHeight())
+				.defaultGapForGameField(50)
+				.calculatVerLength()
+				.calculateHorLength()
 				.player(this._player)
 				.buildGameField();
 

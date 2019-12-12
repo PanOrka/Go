@@ -16,6 +16,7 @@ public class UI_GameField extends JPanel implements MouseListener {
     private int _windowSizeY;
     private int _verLength;
     private int _horLength;
+    private int _defaultGap;
     private ArrayList<Rectangle> _rects = new ArrayList<>();
     private ArrayList<Stone> _stones = new ArrayList<>();
     private Player _player;
@@ -31,24 +32,26 @@ public class UI_GameField extends JPanel implements MouseListener {
 
     }
     public void printGameBoard(Graphics g) {
-        int defaultGap = 50;
-        _verLength = (int) Math.floor((_windowSizeX - 650 + _verFieldAmount)/_verFieldAmount);
-        _horLength = (int) Math.floor((_windowSizeY - 150 + _horFieldAmount)/_horFieldAmount);
+
 
         setBackground(Color.orange);
-        printHorLines(g,_verLength,_horLength,defaultGap);
-        printVerLines(g,_verLength,_horLength,defaultGap);
+        printHorLines(g,_verLength,_horLength,_defaultGap);
+        printVerLines(g,_verLength,_horLength,_defaultGap);
         printStones(g);
     }
 
     private void printHorLines(Graphics g,int verLength, int horLength, int defaultGap) {
         for(int i = 0; i <= _verFieldAmount; i++) {
             g.drawLine(defaultGap + verLength * i , defaultGap,defaultGap + verLength * i,defaultGap + horLength * _horFieldAmount );
-            for(int j = 0; j <= _horFieldAmount; j++){
-                _rects.add(new Rectangle(defaultGap + verLength * i - verLength/4,defaultGap + horLength * j - horLength/4,(verLength/2),(horLength/2)));
+
+        }
+    }
+    private void createRectsForPickingField(int defaultGap,int verLength, int horLength){
+        for(int i = 0; i <= _verFieldAmount; i++) {
+            for (int j = 0; j <= _horFieldAmount; j++) {
+                _rects.add(new Rectangle(defaultGap + verLength * i - verLength / 4, defaultGap + horLength * j - horLength / 4, (verLength / 2), (horLength / 2)));
                 //g.drawRect(defaultGap + verLength * i - verLength/4,defaultGap + horLength * j - horLength/4,(verLength/2),(horLength/2));
             }
-
         }
     }
 
@@ -152,6 +155,9 @@ public class UI_GameField extends JPanel implements MouseListener {
         private int _horFieldAmount;
         private int _windowSizeX;
         private int _windowSizeY;
+        private int _verLength;
+        private int _horLength;
+        private int _defaultGap;
         private Player _player;
 
         public GameFieldBuilder verFieldAmount(int verFieldAmount) {
@@ -177,6 +183,18 @@ public class UI_GameField extends JPanel implements MouseListener {
             this._player = player;
             return this;
         }
+        public GameFieldBuilder calculatVerLength(){
+            this._verLength = (int)Math.floor((this._windowSizeX - 650 + this._verFieldAmount)/_verFieldAmount);
+            return this;
+        }
+        public GameFieldBuilder calculateHorLength(){
+            this._horLength = (int)Math.floor((this._windowSizeY - 150 + this._horFieldAmount)/_horFieldAmount);
+            return this;
+        }
+        public GameFieldBuilder defaultGapForGameField(int gap){
+            this._defaultGap = gap;
+            return this;
+        }
 
         public UI_GameField buildGameField() {
             UI_GameField gameField = new UI_GameField();
@@ -185,8 +203,11 @@ public class UI_GameField extends JPanel implements MouseListener {
             gameField._horFieldAmount = this._horFieldAmount;
             gameField._windowSizeX = this._windowSizeX;
             gameField._windowSizeY = this._windowSizeY;
+            gameField._verLength = this._verLength;
+            gameField._horLength = this._horLength;
+            gameField._defaultGap = this._defaultGap;
             gameField._player = this._player;
-
+            gameField.createRectsForPickingField(this._defaultGap,this._verLength,this._horLength);
             return gameField;
         }
     }

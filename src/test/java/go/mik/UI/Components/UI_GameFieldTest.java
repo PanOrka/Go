@@ -1,9 +1,12 @@
 package go.mik.UI.Components;
 
-import go.mik.UI.ABS_UIWindow;
+import go.mik.Client.Player;
 import go.mik.UI.UIWindow;
 import org.junit.Test;
 
+import java.awt.*;
+
+import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 public class UI_GameFieldTest {
@@ -13,10 +16,21 @@ public class UI_GameFieldTest {
             .player(null)
             .windowSizeX(1500)
             .windowSizeY(1000)
+            .defaultGapForGameField(50)
+            .calculatVerLength()
+            .calculateHorLength()
             .buildGameField();
 
     @Test
     public void whichFieldWasPicked() {
+        int _verLength = (int) Math.floor((1500 - 650 + _testField.getVerFieldAmount())/_testField.getVerFieldAmount());
+        int _horLength = (int) Math.floor((1500 - 650 + _testField.getHorFieldAmount())/_testField.getHorFieldAmount());
+        int[] wantedField = new int[]{5, 5};
+        int[] calculatedField = _testField.whichFieldWasPicked(_verLength * 4 + 50,_horLength * 4 + 50);
+        int[] testedFIeld = new int[]{calculatedField[0],calculatedField[1]};
+
+        //Sprawdzmy, czy wybrane zostalo pole [5;5]
+        assertArrayEquals(wantedField,testedFIeld);
     }
 
     @Test
@@ -40,5 +54,13 @@ public class UI_GameFieldTest {
     @Test
     public void getHorFieldAmount() {
         assertEquals(18, _testField.getHorFieldAmount());
+    }
+
+    @Test
+    public void paintGameboardTest(){
+        Graphics graphics= mock(Graphics.class);
+        //UIWindow _window = mock(UIWindow.class);
+        UI_GameField _field = mock(UI_GameField.class);
+        verify(_field).printGameBoard(_field.getGraphics());
     }
 }

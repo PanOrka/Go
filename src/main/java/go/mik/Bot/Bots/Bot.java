@@ -34,7 +34,7 @@ public abstract class Bot implements ServerConnector, Runnable {
 
             this.getInput();
         } catch(Exception ex) {
-            System.out.println("NormalBot thread problem");
+            System.out.println("Bot thread problem");
             System.err.println(ex.getMessage());
         }
     }
@@ -48,6 +48,8 @@ public abstract class Bot implements ServerConnector, Runnable {
             if (response.startsWith("GAME:")) {
                 response = response.replaceFirst("GAME:", "");
                 this.setStones(response);
+            } else if (response.equals("TURN")) {
+                this.logic.makeTurn();
             } else if (response.equals("QUIT")) {
                 break;
             }
@@ -80,8 +82,11 @@ public abstract class Bot implements ServerConnector, Runnable {
                 System.err.println(ex.getMessage());
             }
         } else {
-
+            for (int i=1; i<19 + 1; i++) {
+                for (int k=1; k<19 + 1; k++) {
+                    this.logic.setField(gameSet.charAt(k*i - 1), i-1, k-1);
+                }
+            }
         }
-        this.logic.makeTurn();
     }
 }

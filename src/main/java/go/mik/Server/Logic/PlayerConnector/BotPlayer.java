@@ -90,6 +90,7 @@ public class BotPlayer extends PlayerConnector {
         if (response.startsWith("GAME:")) {
             this.takeMsg(response);
             this.sendMsg(response);
+            this.sendMsg("TURN");
             this.gameSystemInterface.setCurrentPlayer(this.opponent);
         }
     }

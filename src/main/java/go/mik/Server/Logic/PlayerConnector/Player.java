@@ -110,6 +110,7 @@ public class Player extends PlayerConnector {
         if (response.startsWith("GAME:")) {
             this.takeMsg(response);
             this.sendMsg(response);
+            this.sendMsg("TURN");
             this.gameSystemInterface.setCurrentPlayer(this.opponent);
         } else if (response.startsWith("CHAT:")) {
             this.takeMsg(response);

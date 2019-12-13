@@ -1,7 +1,6 @@
 package go.mik.Client;
 
-import go.mik.UI.ABS_UIWindow;
-import go.mik.UI.UIWindow;
+import go.mik.UI.Components.UIWindow;
 
 import java.io.PrintWriter;
 import java.net.Socket;

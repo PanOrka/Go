@@ -10,7 +10,8 @@ public class ServerStarter {
         new ServerStarter();
     }
 
-    private ServerStarter() {
+    //Public->> dla testow
+    public ServerStarter() {
         this.initialize();
         //while(!this.start) {
             // WAIT FOR THREAD

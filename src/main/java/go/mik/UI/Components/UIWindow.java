@@ -1,6 +1,7 @@
-package go.mik.UI;
+package go.mik.UI.Components;
 
 import go.mik.Client.Player;
+import go.mik.UI.Components.ABS_UIWindow;
 import go.mik.UI.Components.UI_Chat;
 import go.mik.UI.Components.UI_GameField;
 import go.mik.UI.Controllers.ButtonController;
@@ -13,7 +14,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 // ZABAWA
-public class UIWindow extends ABS_UIWindow{
+public class UIWindow extends ABS_UIWindow {
 
 	private JPanel _mainPanel = new JPanel(new BorderLayout(2,2));
 	private JPanel _chatAndButtonsPanel = new JPanel(new GridBagLayout());

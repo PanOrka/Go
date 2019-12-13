@@ -1,12 +1,7 @@
 package go.mik.UI.Components;
 
-import go.mik.Client.Player;
-import go.mik.UI.UIWindow;
 import org.junit.Test;
 
-import java.awt.*;
-
-import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 public class UI_GameFieldTest {
@@ -58,9 +53,5 @@ public class UI_GameFieldTest {
 
     @Test
     public void paintGameboardTest(){
-        Graphics graphics= mock(Graphics.class);
-        //UIWindow _window = mock(UIWindow.class);
-        UI_GameField _field = mock(UI_GameField.class);
-        verify(_field).printGameBoard(_field.getGraphics());
     }
 }

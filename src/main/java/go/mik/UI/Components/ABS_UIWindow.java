@@ -1,4 +1,4 @@
-package go.mik.UI;
+package go.mik.UI.Components;
 
 import go.mik.Client.Player;
 import go.mik.UI.Components.UI_Chat;
@@ -31,5 +31,14 @@ public abstract class ABS_UIWindow extends JFrame implements ActionListener {
     };
 
     abstract void createGameField(int verFieldAmount, int horFieldAmount);
+
+    //For Testing
+    public UI_Chat get_chatBox(){
+        return  this._chatBox;
+    }
+    //For Testing
+    public JTextField get_inputForChat(){
+        return this._inputForChat;
+    }
 
 }

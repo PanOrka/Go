@@ -6,44 +6,47 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class Player implements Client {
+public class Player implements ServerConnector {
     private String nickName;
+    private Socket socket;
     private Scanner input;
     private PrintWriter output;
     private UIWindow _gameWindow;
 
     public Player(String nickName, String serverAddress, int socketPort) throws Exception {
         this.nickName = nickName;
-        Socket socket = new Socket(serverAddress, socketPort);
+        this.socket = new Socket(serverAddress, socketPort);
         this.input = new Scanner(socket.getInputStream());
         this.output = new PrintWriter(socket.getOutputStream(), true);
         this._gameWindow = new UIWindow(this, nickName);
-
-        //new TestSender(this.nickName, this); // TEST OF SENDING CLIENT -> SERVER -> CLIENT
     }
 
     @Override
-    public void start() {
+    public void start(boolean playWithBot) {
         System.out.println("Player is Running");
-        try {
-            output.println(nickName);
+        if (playWithBot) {
+            output.println("PLAY:BOT:" + nickName);
+        } else {
+            output.println("PLAY:PVP:" + nickName);
+        }
 
-            String response;
-            while (input.hasNextLine()) {
-                response = input.nextLine();
-                //System.out.println(response);
+        this.getInput();
+    }
 
-               if (response.startsWith("CHAT:")) {
-                    response = response.replaceFirst("CHAT:", "");
-                    this.sendToChat(response);
-                } else if (response.startsWith("GAME:")) {
-                   response = response.replaceFirst("GAME:", "");
-                   this.setStones(response);
-                    // UI.setStones <= response // thread na ui ktory przekazuje response albo parsuje i przekazuje response // może tak zrobimy
-                }
+    @Override
+    public void getInput() {
+        String response;
+        while (input.hasNextLine()) {
+            response = input.nextLine();
+
+            if (response.startsWith("CHAT:")) {
+                response = response.replaceFirst("CHAT:", "");
+                this.sendToChat(response);
+            } else if (response.startsWith("GAME:")) {
+                response = response.replaceFirst("GAME:", "");
+                this.setStones(response);
+                // UI.setStones <= response
             }
-        } catch(Exception ex) {
-            System.err.println(ex.getMessage());
         }
     }
 
@@ -65,13 +68,6 @@ public class Player implements Client {
     //wysylanie z ui do servera info o probie polozenia kloca || Splitter ---> ";"
     public void move(String position) {
         this.output.println("MOVE:" + position);
-        /*setStones("bwwobbbbbbbbbbbbbbb" +
-                "ooooooooooooooooooo" +  "ooooooooooooooooooo" +"bboooooooooooooooob" +  "booooooooooooooooob"
-                +  "ooooooooooooooooooo"+  "ooooooooooooooooooo" +  "booooooooooooooooob"
-                +  "ooooooooooooooooooo" +  "ooooooooooooooooooo" +  "ooooooooooooooooooo"
-                +  "ooooooooooooooooooo" +  "ooooooooooooooooooo" +  "ooooooooooooooooooo"
-                +  "ooooooooooooooooooo" +  "ooooooooooooooooooo" +  "ooooooooooooooooooo"
-                + "ooooooooooooooooooo" +  "ooooooooooooooooooo" +  "oooooooooooooooooob");*/
     }
 
     @Override
@@ -82,9 +78,9 @@ public class Player implements Client {
             try{
                 String[] str = gameSet.split(";");
 
-                if(str[2].equals("b")){
+                if (str[2].equals("b")){
                     this._gameWindow.getUI_Field().addStoneToList("black", Integer.parseInt(str[0])+1, Integer.parseInt(str[1])+1);
-                }else if(str[2].equals("w")){
+                } else if(str[2].equals("w")){
                     this._gameWindow.getUI_Field().addStoneToList("white", Integer.parseInt(str[0])+1, Integer.parseInt(str[1])+1);
                 }
             }catch(NumberFormatException ex){
@@ -107,10 +103,5 @@ public class Player implements Client {
                 }
             }
         }
-    }
-
-    @Override
-    public void quit() {
-
     }
 }

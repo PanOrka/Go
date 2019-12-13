@@ -1,16 +1,27 @@
 package go.mik.Server.Logic.Game;
 
-class Game {
-    private final Stone[][] field;
-    private char actualColor, opponentColor;
-    private boolean[] isEmpty;
-    private int counter;
-    private boolean canPut;
+import go.mik.Server.Logic.Game.GameRules.BreathChecker;
+import go.mik.Server.Logic.Game.GameRules.GameRules;
+import go.mik.Server.Logic.Game.GameRules.SuicideMoveChecker;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Game {
+    private List<GameRules> gameRules;
+
+    public enum States {
+        NOTHING, CAN_PUT, FIELD_CHANGE
+    }
+
+    public final Stone[][] field;
+    public char actualColor, opponentColor;
+    public States state;
 
     Game() {
         this.field = new Stone[19][19];
-        this.isEmpty = new boolean[4];
         this.setStones();
+        this.setRules();
     }
 
     String move(String command, char color) {
@@ -27,57 +38,25 @@ class Game {
 
         if (this.field[x][y].isOccupied != 'o') {
             return "CHAT:This is occupied";
+        } else if (this.field[x][y].wasDeadBefore) {
+            return "CHAT:This place is dead";
         }
 
+        state = States.NOTHING;
         this.field[x][y].isOccupied = this.actualColor;
 
-        this.counter = 0;
-        this.canPut = true;
-        this.setFlags();
-        if (x+1 < 19 && this.field[x+1][y].isOccupied == opponentColor) {
-            this.isEmpty[this.counter] = false;
-            this.checkBreath(x+1, y);
-            if (!this.isEmpty[this.counter]) {
-                this.clearChecked();
-                this.canPut = false;
-            }
-            this.counter++;
-        }
-        this.setFlags();
-        if (x-1 >= 0 && this.field[x-1][y].isOccupied == opponentColor) {
-            this.isEmpty[this.counter] = false;
-            this.checkBreath(x-1, y);
-            if (!this.isEmpty[this.counter]) {
-                this.clearChecked();
-                this.canPut = false;
-            }
-            this.counter++;
-        }
-        this.setFlags();
-        if (y+1 < 19 && this.field[x][y+1].isOccupied == opponentColor) {
-            this.isEmpty[this.counter] = false;
-            this.checkBreath(x, y+1);
-            if (!this.isEmpty[this.counter]) {
-                this.clearChecked();
-                this.canPut = false;
-            }
-            this.counter++;
-        }
-        this.setFlags();
-        if (y-1 >= 0 && this.field[x][y-1].isOccupied == opponentColor) {
-            this.isEmpty[this.counter] = false;
-            this.checkBreath(x, y-1);
-            if (!this.isEmpty[this.counter]) {
-                this.clearChecked();
-                this.canPut = false;
-            }
+        for (GameRules rules : gameRules) {
+            rules.check(x, y);
         }
 
-        if (this.canPut) {
+        if (state == States.CAN_PUT) {
             return "GAME:put:" + x + ";" + y + ";" + this.actualColor;
+        } else if (state == States.FIELD_CHANGE) {
+            return "GAME:" + parseField();
+        } else {
+            this.field[x][y].isOccupied = 'o';
+            return "CHAT:That move is not valid";
         }
-
-        return "GAME:" + parseField();
     }
 
     private int parser(String number) {
@@ -86,59 +65,6 @@ class Game {
         } catch(NumberFormatException ex) {
             System.err.println(ex.getMessage());
             return 0;
-        }
-    }
-
-    private void checkBreath(int x, int y) {
-        if (this.isEmpty[this.counter]) {
-            return;
-        }
-
-        if (x+1 < 19 && this.field[x+1][y].isOccupied == 'o') {
-            this.isEmpty[this.counter] = true;
-            return;
-        } else if (x-1 >= 0 && this.field[x-1][y].isOccupied == 'o') {
-            this.isEmpty[this.counter] = true;
-            return;
-        } else if (y+1 < 19 && this.field[x][y+1].isOccupied == 'o') {
-            this.isEmpty[this.counter] = true;
-            return;
-        } else if (y-1 >= 0 && this.field[x][y-1].isOccupied == 'o') {
-            this.isEmpty[this.counter] = true;
-            return;
-        }
-
-        this.field[x][y].wasChecked = true;
-
-        if (x+1 < 19 && this.field[x+1][y].isOccupied == this.opponentColor && !this.field[x+1][y].wasChecked) {
-            checkBreath(x+1, y);
-        }
-        if (x-1 >= 0 && this.field[x-1][y].isOccupied == this.opponentColor && !this.field[x-1][y].wasChecked) {
-            checkBreath(x-1, y);
-        }
-        if (y+1 < 19 && this.field[x][y+1].isOccupied == this.opponentColor && !this.field[x][y+1].wasChecked) {
-            checkBreath(x, y+1);
-        }
-        if (y-1 >= 0 && this.field[x][y-1].isOccupied == this.opponentColor && !this.field[x][y-1].wasChecked) {
-            checkBreath(x, y-1);
-        }
-    }
-
-    private void clearChecked() {
-        for (int i=0; i<19; i++) {
-            for (int j=0; j<19; j++) {
-                if (this.field[i][j].wasChecked) {
-                    this.field[i][j].isOccupied = 'o';
-                }
-            }
-        }
-    }
-
-    private void setFlags() {
-        for (int i=0; i<19; i++) {
-            for (int j=0; j<19; j++) {
-                this.field[i][j].wasChecked = false;
-            }
         }
     }
 
@@ -160,5 +86,11 @@ class Game {
         }
         str = builder.toString();
         return str;
+    }
+
+    private void setRules() {
+        gameRules = new ArrayList<>();
+        gameRules.add(new BreathChecker(this));
+        gameRules.add(new SuicideMoveChecker(this));
     }
 }

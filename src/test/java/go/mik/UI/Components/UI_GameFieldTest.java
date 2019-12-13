@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class UI_GameFieldTest {
-    UI_GameField _testField = UI_GameField.builder()
+    /*UI_GameField _testField = UI_GameField.builder()
             .horFieldAmount(19)
             .verFieldAmount(19)
             .player(null)
@@ -14,6 +14,7 @@ public class UI_GameFieldTest {
             .defaultGapForGameField(50)
             .calculatVerLength()
             .calculateHorLength()
+            .initializeStoneList()
             .buildGameField();
 
     @Test
@@ -53,5 +54,5 @@ public class UI_GameFieldTest {
 
     @Test
     public void paintGameboardTest(){
-    }
+    }*/
 }

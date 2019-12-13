@@ -42,6 +42,7 @@ public class UIWindow extends ABS_UIWindow {
 				.calculatVerLength()
 				.calculateHorLength()
 				.player(this._player)
+				.initializeStoneList()
 				.buildGameField();
 
 		_gameField.repaint();

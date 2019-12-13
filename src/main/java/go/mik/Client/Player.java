@@ -80,29 +80,32 @@ public class Player implements ServerConnector {
                 String[] str = gameSet.split(";");
 
                 if (str[2].equals("b")){
-                    this._gameWindow.getUI_Field().addStoneToList("black", Integer.parseInt(str[0])+1, Integer.parseInt(str[1])+1);
+                    this._gameWindow.getUI_Field().addNewStone("black", Integer.parseInt(str[0]), Integer.parseInt(str[1]));
                 } else if(str[2].equals("w")){
-                    this._gameWindow.getUI_Field().addStoneToList("white", Integer.parseInt(str[0])+1, Integer.parseInt(str[1])+1);
+                    this._gameWindow.getUI_Field().addNewStone("white", Integer.parseInt(str[0]), Integer.parseInt(str[1]));
                 }
             }catch(NumberFormatException ex){
                 System.err.println(ex.getMessage());
             }
         }
         else {
-            _gameWindow.getUI_Field().clearStoneList();
-            for (int i = 1; i <= _gameWindow.getUI_Field().getVerFieldAmount(); i++) {
+            for (int i = 0; i <= _gameWindow.getUI_Field().getVerFieldAmount(); i++) {
                 for (int j = 0; j <= _gameWindow.getUI_Field().getVerFieldAmount(); j++) {
 
-                    if (gameSet.charAt(j + (_gameWindow.getUI_Field().getVerFieldAmount() + 1) * (i - 1)) == 'b') {
+                    if (gameSet.charAt(j + (_gameWindow.getUI_Field().getVerFieldAmount() + 1) * i) == 'b') {
 
-                        this._gameWindow.getUI_Field().addStoneToList("black", j + 1, i);
+                        this._gameWindow.getUI_Field().addNewStone("black", j, i);
 
-                    } else if (gameSet.charAt(j + (_gameWindow.getUI_Field().getVerFieldAmount() + 1) * (i - 1)) == 'w') {
+                    } else if (gameSet.charAt(j + (_gameWindow.getUI_Field().getVerFieldAmount() + 1) * i ) == 'w') {
 
-                        this._gameWindow.getUI_Field().addStoneToList("white", j + 1, i);
+                        this._gameWindow.getUI_Field().addNewStone("white", j, i);
+                    }
+                    else if (gameSet.charAt(j + (_gameWindow.getUI_Field().getVerFieldAmount() + 1) * i) == 'o'){
+                        this._gameWindow.getUI_Field().removeStoneFromList(j,i);
                     }
                 }
             }
         }
+        this._gameWindow.getUI_Field().repaint();
     }
 }

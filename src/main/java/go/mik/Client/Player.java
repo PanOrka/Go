@@ -1,6 +1,6 @@
 package go.mik.Client;
 
-import go.mik.UI.UIWindow;
+import go.mik.UI.Components.UIWindow;
 
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -24,6 +24,7 @@ public class Player implements ServerConnector {
     @Override
     public void start(boolean playWithBot) {
         System.out.println("Player is Running");
+      
         if (playWithBot) {
             output.println("PLAY:BOT:" + nickName);
         } else {

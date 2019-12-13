@@ -6,7 +6,7 @@ public class ServerStarter {
     public static void main(String[] args) {
         new ServerStarter();
     }
-
+  
     private ServerStarter() {
         this.initialize(new Server(1111));
         this.server.start();

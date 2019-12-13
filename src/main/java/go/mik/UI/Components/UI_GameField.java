@@ -17,12 +17,9 @@ public class UI_GameField extends JPanel implements MouseListener {
     private int _verLength;
     private int _horLength;
     private int _defaultGap;
-    private ArrayList<Rectangle> _rects = new ArrayList<>();
-    //private ArrayList<Stone> _stones = new ArrayList<>();
-
-    private Stone[][] _stonesArray;
-
     private Player _player;
+    private ArrayList<Rectangle> _rects = new ArrayList<>();
+    private Stone[][] _stonesArray;
 
     public UI_GameField(){
 
@@ -86,14 +83,14 @@ public class UI_GameField extends JPanel implements MouseListener {
                 if (stone != null) {
                     switch (stone.get_stoneColour()) {
                         case "black":
-                            g2d.setColor(Color.BLACK);
+                            g2d.setColor(Color.black);
                             g2d.fillOval(i * _verLength + _defaultGap - stone.get_width() / 2, j * _horLength + _defaultGap - stone.get_height() / 2, stone.get_width(), stone.get_height());
+                            break;
                         case "white":
-                            g2d.setColor(Color.WHITE);
+                            g2d.setColor(Color.white);
                             g2d.fillOval(i * _verLength + _defaultGap - stone.get_width() / 2, j * _horLength + _defaultGap - stone.get_height() / 2, stone.get_width(), stone.get_height());
-                        default:
+                            break;
                     }
-
                 }
             }
         }
@@ -110,11 +107,17 @@ public class UI_GameField extends JPanel implements MouseListener {
         _stonesArray[x][y] = null;
     }
 
+    //FOR TESTS
+    public Stone[][] getStonesArray(){
+        return this._stonesArray;
+    }
+
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
 
     }
 
+    //Nie trzeba tego testowac
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
         int[] pickedField = whichFieldWasPicked(mouseEvent.getX(),mouseEvent.getY());
@@ -195,7 +198,7 @@ public class UI_GameField extends JPanel implements MouseListener {
             this._defaultGap = gap;
             return this;
         }
-        public GameFieldBuilder initializeStoneList(){
+        public GameFieldBuilder initializeStoneArray(){
             this._stonesArray = new Stone[this._verFieldAmount+1][this._horFieldAmount+1];
             return this;
         }

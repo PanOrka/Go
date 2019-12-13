@@ -71,6 +71,14 @@ public class Player implements ServerConnector {
         this.output.println("MOVE:" + position);
     }
 
+    public void pass(){
+        this.output.println("GAME:PASS");
+    }
+
+    public void surrender(){
+        this.output.println("GAME:SURRENDER");
+    }
+
     @Override
     //odbieranie z serwera mapy z polozeniem klockow
     public void setStones(String gameSet) {

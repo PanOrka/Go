@@ -1,18 +1,14 @@
 package go.mik.UI.Components;
 
 import go.mik.Client.Player;
-import go.mik.UI.Components.UI_Chat;
-import go.mik.UI.Components.UI_GameField;
-import go.mik.UI.Controllers.ButtonController;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
 
-public abstract class ABS_UIWindow extends JFrame implements ActionListener {
+public abstract class ABS_UIWindow extends JFrame {
 
     protected UI_GameField _gameField;
-    protected ButtonController _buttonController;
-    protected JButton _blackStoneBtn;
+    protected JButton _passBtn;
     protected JButton _surrenderBtn;
     protected UI_Chat _chatBox;
     protected JTextField _inputForChat;

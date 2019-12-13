@@ -4,21 +4,31 @@ import go.mik.Server.Logic.PlayerConnector.PlayerConnector;
 
 public abstract class GameSystemInterface {
     volatile private PlayerConnector currentPlayer;
-    private Game game;
+    volatile private Game game;
+    volatile private boolean isAvailable;
 
     protected GameSystemInterface() {
+        this.isAvailable = true;
         this.game = new Game();
     }
 
-    public void setCurrentPlayer(PlayerConnector playerConnector) {
+    synchronized public void setCurrentPlayer(PlayerConnector playerConnector) {
         this.currentPlayer = playerConnector;
     }
 
-    public PlayerConnector getCurrentPlayer() {
+    synchronized public PlayerConnector getCurrentPlayer() {
         return this.currentPlayer;
     }
 
     synchronized public String move(String command, char color) {
         return game.move(command, color);
+    }
+
+    synchronized public void setAvailable(boolean isAvailable) {
+        this.isAvailable = isAvailable;
+    }
+
+    synchronized public boolean getAvailable() {
+        return isAvailable;
     }
 }

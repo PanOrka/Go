@@ -25,6 +25,7 @@ public class BotPlayer extends PlayerConnector {
             this.setup();
             this.getInput();
         } catch(Exception ex) {
+            System.out.println("BotPlayer problem");
             System.err.println(ex.getMessage());
         } finally {
             if (opponent != null) {
@@ -51,22 +52,45 @@ public class BotPlayer extends PlayerConnector {
     }
 
     @Override
-    void takeMsg(String msg) {
+    void getInput() {
+        String command;
+        while (input.hasNextLine()) { // to blokuje i oczekuje na input z socketa
+            command = input.nextLine();
 
+            if (command.startsWith("MOVE:")) {
+                command = command.replaceFirst("MOVE:", "");
+                this.move(command);
+            } else if (command.equals("QUIT")) {
+                this.takeMsg("QUIT");
+                break;
+            }
+        }
     }
 
     @Override
-    void move(String command) {
-
+    void takeMsg(String msg) {
+        this.output.println(msg);
     }
 
     @Override
     void sendMsg(String msg) {
-
+        this.opponent.takeMsg(msg);
     }
 
     @Override
-    void getInput() {
+    void move(String command) {
+        if (this != this.gameSystemInterface.getCurrentPlayer()) {
+            return;
+        } else if (this.opponent == null) {
+            return;
+        }
 
+        String response = this.gameSystemInterface.move(command, this.color);
+
+        if (response.startsWith("GAME:")) {
+            this.takeMsg(response);
+            this.sendMsg(response);
+            this.gameSystemInterface.setCurrentPlayer(this.opponent);
+        }
     }
 }

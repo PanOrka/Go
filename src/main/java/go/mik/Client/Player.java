@@ -24,28 +24,29 @@ public class Player implements ServerConnector {
     @Override
     public void start(boolean playWithBot) {
         System.out.println("Player is Running");
-        try {
-            if (playWithBot) {
-                output.println("PLAY:BOT:" + nickName);
-            } else {
-                output.println("PLAY:PVP:" + nickName);
-            }
+        if (playWithBot) {
+            output.println("PLAY:BOT:" + nickName);
+        } else {
+            output.println("PLAY:PVP:" + nickName);
+        }
 
-            String response;
-            while (input.hasNextLine()) {
-                response = input.nextLine();
+        this.getInput();
+    }
 
-               if (response.startsWith("CHAT:")) {
-                    response = response.replaceFirst("CHAT:", "");
-                    this.sendToChat(response);
-                } else if (response.startsWith("GAME:")) {
-                   response = response.replaceFirst("GAME:", "");
-                   this.setStones(response);
-                    // UI.setStones <= response
-                }
+    @Override
+    public void getInput() {
+        String response;
+        while (input.hasNextLine()) {
+            response = input.nextLine();
+
+            if (response.startsWith("CHAT:")) {
+                response = response.replaceFirst("CHAT:", "");
+                this.sendToChat(response);
+            } else if (response.startsWith("GAME:")) {
+                response = response.replaceFirst("GAME:", "");
+                this.setStones(response);
+                // UI.setStones <= response
             }
-        } catch(Exception ex) {
-            System.err.println(ex.getMessage());
         }
     }
 
@@ -77,9 +78,9 @@ public class Player implements ServerConnector {
             try{
                 String[] str = gameSet.split(";");
 
-                if(str[2].equals("b")){
+                if (str[2].equals("b")){
                     this._gameWindow.getUI_Field().addStoneToList("black", Integer.parseInt(str[0])+1, Integer.parseInt(str[1])+1);
-                }else if(str[2].equals("w")){
+                } else if(str[2].equals("w")){
                     this._gameWindow.getUI_Field().addStoneToList("white", Integer.parseInt(str[0])+1, Integer.parseInt(str[1])+1);
                 }
             }catch(NumberFormatException ex){

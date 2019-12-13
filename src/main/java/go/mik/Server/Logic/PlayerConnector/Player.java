@@ -25,13 +25,16 @@ public class Player extends PlayerConnector {
             this.setup();
             this.getInput();
         } catch(Exception ex) {
+            System.out.println("Player problem");
             System.err.println(ex.getMessage());
         } finally {
-            if (opponent != null) {
-                sendMsg("CHAT:" + this.nickName + " Has left the game");
+            if (this.opponent != null) {
+                this.sendMsg("CHAT:" + this.nickName + " Has left the game");
+                this.sendMsg("QUIT");
             }
+            this.gameSystemInterface.setAvailable(false);
             try {
-                socket.close();
+                this.socket.close();
             } catch (IOException ex) {
                 System.err.println(ex.getMessage());
             }
@@ -91,11 +94,14 @@ public class Player extends PlayerConnector {
 
     @Override
     void move(String command) {
-        if (this != this.gameSystemInterface.getCurrentPlayer()) {
-            this.output.println("CHAT:Not your turn");
+         if (!this.gameSystemInterface.getAvailable()) {
+            this.takeMsg("CHAT:Game has ended");
+            return;
+        } if (this != this.gameSystemInterface.getCurrentPlayer()) {
+            this.takeMsg("CHAT:Not your turn");
             return;
         } else if (this.opponent == null) {
-            this.output.println("CHAT:Wait for your opponent");
+            this.takeMsg("CHAT:Wait for your opponent");
             return;
         }
 

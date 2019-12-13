@@ -3,8 +3,8 @@ package go.mik.Server.Logic.PlayerConnector;
 import go.mik.Server.Logic.Game.GameSystemInterface;
 
 public abstract class PlayerConnector implements Runnable {
-    protected PlayerConnector opponent;
-    protected String nickName;
+    volatile protected PlayerConnector opponent;
+    volatile protected String nickName;
     protected char color;
     protected GameSystemInterface gameSystemInterface;
 

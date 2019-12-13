@@ -12,8 +12,9 @@ public class Player extends PlayerConnector {
     private Scanner input;
     private PrintWriter output;
 
-    public Player(Socket socket, char color, GameSystemInterface gameSystemInterface) {
+    public Player(Socket socket, String nickName, char color, GameSystemInterface gameSystemInterface) {
         this.socket = socket;
+        this.nickName = nickName;
         this.color = color;
         this.gameSystemInterface = gameSystemInterface;
     }
@@ -24,13 +25,16 @@ public class Player extends PlayerConnector {
             this.setup();
             this.getInput();
         } catch(Exception ex) {
+            System.out.println("Player problem");
             System.err.println(ex.getMessage());
         } finally {
-            if (opponent != null) {
-                sendMsg("CHAT:" + this.nickName + " Has left the game");
+            if (this.opponent != null) {
+                this.sendMsg("CHAT:" + this.nickName + " Has left the game");
+                this.sendMsg("QUIT");
             }
+            this.gameSystemInterface.setAvailable(false);
             try {
-                socket.close();
+                this.socket.close();
             } catch (IOException ex) {
                 System.err.println(ex.getMessage());
             }
@@ -42,9 +46,7 @@ public class Player extends PlayerConnector {
         this.input = new Scanner(this.socket.getInputStream());
         this.output = new PrintWriter(this.socket.getOutputStream(), true);
 
-        this.nickName = this.input.nextLine();
-
-        this.output.println("CHAT:WELCOME " + this.nickName);
+        this.takeMsg("CHAT:WELCOME " + this.nickName);
         if (color == 'b') {
             this.gameSystemInterface.setCurrentPlayer(this);
             this.takeMsg("CHAT:You are playing as black");
@@ -92,11 +94,14 @@ public class Player extends PlayerConnector {
 
     @Override
     void move(String command) {
-        if (this != this.gameSystemInterface.getCurrentPlayer()) {
-            this.output.println("CHAT:Not your turn");
+         if (!this.gameSystemInterface.getAvailable()) {
+            this.takeMsg("CHAT:Game has ended");
+            return;
+        } if (this != this.gameSystemInterface.getCurrentPlayer()) {
+            this.takeMsg("CHAT:Not your turn");
             return;
         } else if (this.opponent == null) {
-            this.output.println("CHAT:Wait for your opponent");
+            this.takeMsg("CHAT:Wait for your opponent");
             return;
         }
 
@@ -105,6 +110,7 @@ public class Player extends PlayerConnector {
         if (response.startsWith("GAME:")) {
             this.takeMsg(response);
             this.sendMsg(response);
+            this.sendMsg("TURN");
             this.gameSystemInterface.setCurrentPlayer(this.opponent);
         } else if (response.startsWith("CHAT:")) {
             this.takeMsg(response);

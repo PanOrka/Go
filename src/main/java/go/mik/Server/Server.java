@@ -49,7 +49,7 @@ class Server {
                         pool.execute(playerConnector2);
                         break;
                     } else if (response.startsWith("PLAY:PVP")) {
-                        if (this.playerCounter == 0 || !this.gameSystemForPVP.getAvailable()) {
+                        if (this.playerCounter == 0 || this.gameSystemForPVP.getAvailable()) {
                             System.out.println("New Player vs Player Game");
                             this.playerCounter = 0;
                             this.gameSystemForPVP = new GameSystem();

@@ -7,4 +7,6 @@ public interface ServerConnector {
     void setStones(String gameSet);
     void sendToOpponentChat(String message);
     void move(String position);
+    void pass();
+    void surrender();
 }

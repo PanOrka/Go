@@ -93,4 +93,14 @@ public class Game {
         gameRules.add(new BreathChecker(this));
         gameRules.add(new SuicideMoveChecker(this));
     }
+
+    int getBlackPoints() {
+
+        return 15;
+    }
+
+    int getWhitePoints() {
+
+        return 20;
+    }
 }

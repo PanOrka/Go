@@ -16,4 +16,28 @@ public abstract class PlayerConnector implements Runnable {
 
     @Override
     abstract public void run();
+
+    protected void pass() {
+        if (this != this.gameSystemInterface.getCurrentPlayer()) {
+            this.takeMsg("CHAT:Not your turn");
+            return;
+        }
+
+        this.takeMsg("CHAT:You have passed");
+        this.sendMsg("CHAT:Opponent have passed\nYour move");
+        this.sendMsg("PASS");
+        this.gameSystemInterface.playerPass(this.color);
+        this.gameSystemInterface.setCurrentPlayer(this.opponent);
+    }
+
+    public void endGame(int blackPoints, int whitePoints) {
+        this.sendMsg("CHAT:Game has ended");
+        this.takeMsg("CHAT:Game has ended");
+
+        this.sendMsg("CHAT:Black score: " + blackPoints);
+        this.sendMsg("CHAT:White score: " + whitePoints);
+
+        this.takeMsg("CHAT:Black score: " + blackPoints);
+        this.takeMsg("CHAT:White score: " + whitePoints);
+    }
 }

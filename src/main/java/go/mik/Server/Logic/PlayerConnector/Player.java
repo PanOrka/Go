@@ -32,7 +32,7 @@ public class Player extends PlayerConnector {
                 this.sendMsg("CHAT:" + this.nickName + " Has left the game");
                 this.sendMsg("QUIT");
             }
-            this.gameSystemInterface.setAvailable(false);
+            this.gameSystemInterface.setAvailable();
             try {
                 this.socket.close();
             } catch (IOException ex) {
@@ -71,7 +71,9 @@ public class Player extends PlayerConnector {
 
     @Override
     void sendMsg(String msg) {
-        this.opponent.takeMsg(msg);
+        if (opponent != null) {
+            this.opponent.takeMsg(msg);
+        }
     }
 
     @Override
@@ -88,13 +90,15 @@ public class Player extends PlayerConnector {
                 command = command.replaceFirst("CHAT:", "");
                 this.sendMsg("CHAT:" + nickName + ": " + command);
 
+            } else if (command.equals("PASS")) {
+                this.pass();
             }
         }
     }
 
     @Override
     void move(String command) {
-         if (!this.gameSystemInterface.getAvailable()) {
+         if (this.gameSystemInterface.getAvailable()) {
             this.takeMsg("CHAT:Game has ended");
             return;
         } if (this != this.gameSystemInterface.getCurrentPlayer()) {

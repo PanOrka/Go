@@ -81,7 +81,7 @@ public class UIWindow extends ABS_UIWindow{
 		_inputForChat.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent) {
-				_player.sendToOpponentChat("CHAT:" + _inputForChat.getText());
+				_player.sendToOpponentChat(_inputForChat.getText());
 				getMessageForChat(_nickName + ": " + _inputForChat.getText() + '\n');
 				_inputForChat.setText("");
 			}

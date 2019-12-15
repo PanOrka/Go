@@ -50,7 +50,10 @@ public abstract class Bot implements ServerConnector, Runnable {
                 this.setStones(response);
             } else if (response.equals("TURN")) {
                 this.logic.makeTurn();
+            } else if (response.equals("PASS")) {
+                this.sendToServer("PASS");
             } else if (response.equals("QUIT")) {
+                this.sendToServer("QUIT");
                 break;
             }
         }

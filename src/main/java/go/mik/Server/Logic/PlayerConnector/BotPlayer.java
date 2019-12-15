@@ -60,8 +60,9 @@ public class BotPlayer extends PlayerConnector {
             if (command.startsWith("MOVE:")) {
                 command = command.replaceFirst("MOVE:", "");
                 this.move(command);
+            } else if (command.equals("PASS")) {
+                this.pass();
             } else if (command.equals("QUIT")) {
-                this.takeMsg("QUIT");
                 break;
             }
         }
@@ -74,7 +75,9 @@ public class BotPlayer extends PlayerConnector {
 
     @Override
     void sendMsg(String msg) {
-        this.opponent.takeMsg(msg);
+        if (this.opponent != null) {
+            this.opponent.takeMsg(msg);
+        }
     }
 
     @Override

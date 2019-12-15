@@ -62,7 +62,7 @@ public class Player implements ServerConnector {
 
     @Override
     public void sendToOpponentChat(String message) {
-        this.output.println(message);
+        this.output.println("CHAT:" + message);
     }
 
     @Override
@@ -71,12 +71,14 @@ public class Player implements ServerConnector {
         this.output.println("MOVE:" + position);
     }
 
-    public void pass(){
-        this.output.println("GAME:PASS");
+    @Override
+    public void pass() {
+        this.output.println("PASS");
     }
 
-    public void surrender(){
-        this.output.println("GAME:SURRENDER");
+    @Override
+    public void surrender() {
+        this.output.println("SURRENDER");
     }
 
     @Override

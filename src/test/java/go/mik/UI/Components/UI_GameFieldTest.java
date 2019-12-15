@@ -14,6 +14,7 @@ public class UI_GameFieldTest {
             .defaultGapForGameField(50)
             .calculatVerLength()
             .calculateHorLength()
+            .initializeStoneArray()
             .buildGameField();
 
     @Test
@@ -30,15 +31,32 @@ public class UI_GameFieldTest {
 
     @Test
     public void addStoneToList() {
-        _testField.addStoneToList(null,10 ,10);
-        assertTrue(0 < _testField.get_stones().size());
+        _testField.addNewStone(null,10 ,10);
+        boolean foundStone = false;
+        for (int i = 0; i <= _testField.getVerFieldAmount(); i++) {
+            for (int j = 0; j <= _testField.getVerFieldAmount(); j++) {
+                if(_testField.getStonesArray()[i][j] != null){
+                    foundStone = true;
+                    break;
+                }
+            }
+        }
+        assertTrue(foundStone);
     }
-
     @Test
-    public void clearStoneList() {
-        _testField.addStoneToList(null,10 ,10);
-        _testField.clearStoneList();
-        assertEquals(0, _testField.get_stones().size());
+    public void removeStoneFromList(){
+        _testField.addNewStone(null,10 ,10);
+        _testField.removeStoneFromList(10,10);
+        boolean foundStone = false;
+        for (int i = 0; i <= _testField.getVerFieldAmount(); i++) {
+            for (int j = 0; j <= _testField.getVerFieldAmount(); j++) {
+                if(_testField.getStonesArray()[i][j] != null){
+                    foundStone = true;
+                    break;
+                }
+            }
+        }
+        assertFalse(foundStone);
     }
 
     @Test
@@ -54,4 +72,5 @@ public class UI_GameFieldTest {
     @Test
     public void paintGameboardTest(){
     }
+
 }

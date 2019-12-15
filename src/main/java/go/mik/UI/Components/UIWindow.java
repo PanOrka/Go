@@ -1,20 +1,18 @@
 package go.mik.UI.Components;
 
 import go.mik.Client.Player;
-import go.mik.UI.Components.ABS_UIWindow;
-import go.mik.UI.Components.UI_Chat;
-import go.mik.UI.Components.UI_GameField;
-import go.mik.UI.Controllers.ButtonController;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.DefaultCaret;
 
 // ZABAWA
-public class UIWindow extends ABS_UIWindow {
+public class UIWindow extends ABS_UIWindow{
 
 	private JPanel _mainPanel = new JPanel(new BorderLayout(2,2));
 	private JPanel _chatAndButtonsPanel = new JPanel(new GridBagLayout());
@@ -42,6 +40,7 @@ public class UIWindow extends ABS_UIWindow {
 				.calculatVerLength()
 				.calculateHorLength()
 				.player(this._player)
+				.initializeStoneArray()
 				.buildGameField();
 
 		_gameField.repaint();
@@ -63,7 +62,7 @@ public class UIWindow extends ABS_UIWindow {
 	private void initializeChatAndButtonsPanel(){
 		GridBagConstraints c = new GridBagConstraints();
 
-		_chatAndButtonsPanel.setBorder(new EmptyBorder(50,100,20,100));
+		_chatAndButtonsPanel.setBorder(new EmptyBorder(50,100,0,100));
 		_chatAndButtonsPanel.setBackground(Color.WHITE);
 
 		_chatPanel = new JScrollPane(_chatBox);
@@ -94,7 +93,7 @@ public class UIWindow extends ABS_UIWindow {
 		c.gridy = 2;
 		c.weighty = 0;
 		c.weightx = 1;
-		_chatAndButtonsPanel.add(_blackStoneBtn,c);
+		_chatAndButtonsPanel.add(_passBtn,c);
 
 		c.gridx = 0;
 		c.gridy = 3;
@@ -105,13 +104,30 @@ public class UIWindow extends ABS_UIWindow {
 		_mainPanel.add(_chatAndButtonsPanel, BorderLayout.EAST);
 	}
 	private void initializeButtons(){
-		_buttonController = new ButtonController(this);
-		_blackStoneBtn = new JButton("PASS");
-		_blackStoneBtn.setBackground(Color.white);
-		_blackStoneBtn.setBorderPainted(false);
-		_blackStoneBtn.setPreferredSize(new Dimension(100,50));
 
-		_surrenderBtn = new JButton("SURRENDER");
+		ImageIcon _surrFlag = new ImageIcon(getClass().getResource("/surrFlag.png"));
+		ImageIcon _passIcon = new ImageIcon(getClass().getResource("/pass.png"));
+
+		_passBtn = new JButton();
+		_passBtn.setIcon(_passIcon);
+		_passBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				_player.pass();
+			}
+		});
+		_passBtn.setBackground(Color.white);
+		_passBtn.setBorderPainted(false);
+		_passBtn.setPreferredSize(new Dimension(150,50));
+
+		_surrenderBtn = new JButton();
+		_surrenderBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				_player.surrender();
+			}
+		});
+		_surrenderBtn.setIcon(_surrFlag);
 		_surrenderBtn.setBackground(Color.white);
 		_surrenderBtn.setBorderPainted(false);
 		_surrenderBtn.setPreferredSize(new Dimension(150,50));
@@ -120,16 +136,11 @@ public class UIWindow extends ABS_UIWindow {
 
 	private void initializeChat(){
 		_chatBox = new UI_Chat();
+		DefaultCaret caret = (DefaultCaret)_chatBox.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+
 		_inputForChat = new JTextField();
 		_inputForChat.setPreferredSize(new Dimension(350, 50));
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent action) {
-		if(action.getSource() == this._blackStoneBtn) {
-			_buttonController.doCertainAction("Pick field");
-		}
-		
 	}
 
 }

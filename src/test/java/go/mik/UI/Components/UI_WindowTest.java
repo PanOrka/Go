@@ -1,10 +1,7 @@
 package go.mik.UI.Components;
 
 import static org.junit.Assert.*;
-
-import go.mik.Client.Client;
 import go.mik.Client.Player;
-import go.mik.Server.Server;
 import go.mik.Server.ServerStarter;
 import static org.mockito.Mockito.*;
 import org.junit.Before;

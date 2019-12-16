@@ -1,4 +1,4 @@
-package go.mik.UI.Managers;
+package go.mik.UI.Components;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;

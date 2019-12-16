@@ -6,10 +6,17 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="Go4" />
         <module name="Go" />
         <module name="Go3" />
         <module name="Go2" />
       </profile>
     </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-Xplugin:Manifold  -processorpath $MAVEN_REPOSITORY$/systems/manifold/manifold/2019.1.28/manifold-2019.1.28.jar:$MAVEN_REPOSITORY$/systems/manifold/manifold-util/2019.1.28/manifold-util-2019.1.28.jar" />
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Go4" options="" />
+    </option>
   </component>
 </project>

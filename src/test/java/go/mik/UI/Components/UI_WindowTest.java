@@ -25,9 +25,4 @@ public class UI_WindowTest {
         assertEquals("test",_testUIWindow.get_chatBox().getText());
     }
 
-    @Test
-    public void inputForChatListenerAndSender(){
-
-    }
-
 }

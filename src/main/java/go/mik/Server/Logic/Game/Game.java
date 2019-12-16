@@ -18,7 +18,7 @@ public class Game {
     public char actualColor, opponentColor;
     public States state;
 
-    Game() {
+    public Game() {
         this.field = new Stone[19][19];
         this.setStones();
         this.setRules();

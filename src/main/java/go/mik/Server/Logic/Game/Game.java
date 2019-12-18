@@ -11,6 +11,7 @@ import java.util.List;
 public class Game {
     private List<GameRules> gameRules;
     private FieldCalculator fieldCalculator;
+    private int blackPoints, whitePoints;
 
     public enum States {
         NOTHING, CAN_PUT, FIELD_CHANGE
@@ -18,7 +19,6 @@ public class Game {
 
     public final Stone[][] field;
     public char actualColor, opponentColor;
-    public int blackPoints, whitePoints;
     public States state;
 
     Game() {

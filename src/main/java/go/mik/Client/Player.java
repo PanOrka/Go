@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class Player implements ServerConnector {
+public class Player implements ServerConnector{
     private String nickName;
     private Socket socket;
     private Scanner input;

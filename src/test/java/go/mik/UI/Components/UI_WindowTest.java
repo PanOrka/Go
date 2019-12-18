@@ -1,10 +1,6 @@
 package go.mik.UI.Components;
 
 import static org.junit.Assert.*;
-import go.mik.Client.Player;
-import go.mik.Server.ServerStarter;
-import static org.mockito.Mockito.*;
-import org.junit.Before;
 import org.junit.Test;
 
 public class UI_WindowTest {

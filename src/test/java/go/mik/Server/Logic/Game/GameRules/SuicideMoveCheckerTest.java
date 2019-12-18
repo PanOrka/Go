@@ -1,6 +1,7 @@
 package go.mik.Server.Logic.Game.GameRules;
 
 import go.mik.Server.Logic.Game.Game;
+import go.mik.Server.Logic.Game.GameRules.SuicideMoveChecker;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -10,7 +11,6 @@ import java.lang.reflect.Method;
 
 
 public class SuicideMoveCheckerTest {
-
 
     private Method Game_Move;
     private Game _testGame;

@@ -46,7 +46,7 @@ public class Launcher extends JFrame implements ActionListener {
         try {
             String nickName = this.nickName.getText();
             if (nickName.equals("")) {
-                throw new InvalidNameException();
+                throw new InvalidNickException();
             }
 
             ServerConnector serverConnector = new Player(nickName, "127.0.0.1", 1111);

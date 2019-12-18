@@ -85,9 +85,14 @@ public abstract class Bot implements ServerConnector, Runnable {
                 System.err.println(ex.getMessage());
             }
         } else {
-            for (int i=1; i<19 + 1; i++) {
-                for (int k=1; k<19 + 1; k++) {
-                    this.logic.setField(gameSet.charAt(k*i - 1), i-1, k-1);
+            char color;
+            for (int i=0; i<19; i++) {
+                for (int k=0; k<19; k++) {
+                    color = gameSet.charAt(i*19 + k);
+                    if (this.logic.getFieldColor(k, i) == 'w' && color == 'o') {
+                        this.logic.setDead(k, i);
+                    }
+                    this.logic.setField(color, k, i);
                 }
             }
         }

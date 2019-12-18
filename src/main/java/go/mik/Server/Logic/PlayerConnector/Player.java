@@ -92,6 +92,8 @@ public class Player extends PlayerConnector {
 
             } else if (command.equals("PASS")) {
                 this.pass();
+            } else if (command.equals("SURRENDER")) {
+                this.surr();
             }
         }
     }

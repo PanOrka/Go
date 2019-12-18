@@ -15,8 +15,9 @@ public class BreathChecker extends GameRules {
     public void check(int x, int y) {
         this.counter = 0;
         this.game.state = Game.States.CAN_PUT;
-        this.setFlags();
+
         if (x+1 < 19 && this.game.field[x+1][y].isOccupied == this.game.opponentColor) {
+            this.setFlags();
             this.isEmpty[this.counter] = false;
             this.checkBreath(x+1, y);
             if (!this.isEmpty[this.counter]) {
@@ -25,8 +26,9 @@ public class BreathChecker extends GameRules {
             }
             this.counter++;
         }
-        this.setFlags();
+
         if (x-1 >= 0 && this.game.field[x-1][y].isOccupied == this.game.opponentColor) {
+            this.setFlags();
             this.isEmpty[this.counter] = false;
             this.checkBreath(x-1, y);
             if (!this.isEmpty[this.counter]) {
@@ -35,8 +37,9 @@ public class BreathChecker extends GameRules {
             }
             this.counter++;
         }
-        this.setFlags();
+
         if (y+1 < 19 && this.game.field[x][y+1].isOccupied == this.game.opponentColor) {
+            this.setFlags();
             this.isEmpty[this.counter] = false;
             this.checkBreath(x, y+1);
             if (!this.isEmpty[this.counter]) {
@@ -45,8 +48,9 @@ public class BreathChecker extends GameRules {
             }
             this.counter++;
         }
-        this.setFlags();
+
         if (y-1 >= 0 && this.game.field[x][y-1].isOccupied == this.game.opponentColor) {
+            this.setFlags();
             this.isEmpty[this.counter] = false;
             this.checkBreath(x, y-1);
             if (!this.isEmpty[this.counter]) {
@@ -92,16 +96,19 @@ public class BreathChecker extends GameRules {
     }
 
     private void clearChecked() {
+        int tempPoints = 0;
         for (int i=0; i<19; i++) {
             for (int j=0; j<19; j++) {
                 if (this.game.field[i][j].wasChecked) {
                     this.game.field[i][j].isOccupied = 'o';
                     this.game.field[i][j].wasDeadBefore = true;
+                    tempPoints++;
                 } else {
                     this.game.field[i][j].wasDeadBefore = false;
                 }
             }
         }
+        this.game.setPoints(tempPoints);
     }
 
     private void setFlags() {

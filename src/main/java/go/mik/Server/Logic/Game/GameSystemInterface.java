@@ -46,11 +46,23 @@ public abstract class GameSystemInterface {
         }
 
         if (blackPassed && whitePassed) {
+            this.isAvailable = false;
             int blackPoints = this.game.getBlackPoints();
             int whitePoints = this.game.getWhitePoints();
 
             this.currentPlayer.endGame(blackPoints, whitePoints);
-            this.isAvailable = false;
         }
+    }
+
+    synchronized public void playerSurr(char color) {
+        this.isAvailable = false;
+        int blackPoints = 0;
+        int whitePoints = 0;
+        if (color == 'b') {
+            whitePoints = this.game.getWhitePoints();
+        } else if (color == 'w') {
+            blackPoints = this.game.getBlackPoints();
+        }
+        this.currentPlayer.endGame(blackPoints, whitePoints);
     }
 }

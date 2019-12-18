@@ -11,9 +11,9 @@ public class NormalBotLogic extends BotLogic {
     private final int fieldEmptyWeight = 2; // if same weight closer then nothing
     private final int fieldSameWeight = 4;
     private final int fieldDiffFurtherWeight = -1;
-    private final int fieldDiffCloserWeight = -2;
-    private final int extraStrategicalWeight = 3; // jak bylo 2 to nie zaczynal kolo sciany
-    private final int extraWallWeight = 10;
+    private final int fieldDiffCloserWeight = -1; // bylo -2
+    private final int extraStrategicalWeight = 2; // przy 3 zaczyna od sciany
+    private final int extraWallWeight = 12; // bylo 10
 
     private int killPoints; // PUNKTY ZA KILL
     private int killPreventPoints; // PUNKTY ZA PREVENT

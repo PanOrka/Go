@@ -1,6 +1,7 @@
 package go.mik.Server.Logic.Game;
 
 import go.mik.Server.Logic.Game.GameRules.BreathChecker;
+import go.mik.Server.Logic.Game.GameRules.FieldCalculator;
 import go.mik.Server.Logic.Game.GameRules.GameRules;
 import go.mik.Server.Logic.Game.GameRules.SuicideMoveChecker;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 public class Game {
     private List<GameRules> gameRules;
+    private FieldCalculator fieldCalculator;
 
     public enum States {
         NOTHING, CAN_PUT, FIELD_CHANGE
@@ -16,12 +18,16 @@ public class Game {
 
     public final Stone[][] field;
     public char actualColor, opponentColor;
+    public int blackPoints, whitePoints;
     public States state;
 
     Game() {
         this.field = new Stone[19][19];
         this.setStones();
         this.setRules();
+        this.fieldCalculator = new FieldCalculator(this);
+        this.blackPoints = 0;
+        this.whitePoints = 0;
     }
 
     String move(String command, char color) {
@@ -94,13 +100,21 @@ public class Game {
         gameRules.add(new SuicideMoveChecker(this));
     }
 
-    int getBlackPoints() {
+    public void setPoints(int points) {
+        if (this.actualColor == 'b') {
+            this.blackPoints += points;
+        } else {
+            this.whitePoints += points;
+        }
+    }
 
-        return 15;
+    int getBlackPoints() {
+        this.blackPoints += this.fieldCalculator.calculatePoints('b');
+        return this.blackPoints;
     }
 
     int getWhitePoints() {
-
-        return 20;
+        this.whitePoints += this.fieldCalculator.calculatePoints('w');
+        return this.whitePoints;
     }
 }

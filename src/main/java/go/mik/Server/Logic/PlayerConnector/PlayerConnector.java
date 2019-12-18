@@ -30,6 +30,17 @@ public abstract class PlayerConnector implements Runnable {
         this.gameSystemInterface.setCurrentPlayer(this.opponent);
     }
 
+    protected void surr() {
+        if (this != this.gameSystemInterface.getCurrentPlayer()) {
+            this.takeMsg("CHAT:Not your turn");
+            return;
+        }
+
+        this.takeMsg("CHAT:You have surrendered");
+        this.sendMsg("CHAT:Opponent have surrendered");
+        this.gameSystemInterface.playerSurr(this.color);
+    }
+
     public void endGame(int blackPoints, int whitePoints) {
         this.sendMsg("CHAT:Game has ended");
         this.takeMsg("CHAT:Game has ended");

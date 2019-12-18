@@ -92,16 +92,19 @@ public class BreathChecker extends GameRules {
     }
 
     private void clearChecked() {
+        int tempPoints = 0;
         for (int i=0; i<19; i++) {
             for (int j=0; j<19; j++) {
                 if (this.game.field[i][j].wasChecked) {
                     this.game.field[i][j].isOccupied = 'o';
                     this.game.field[i][j].wasDeadBefore = true;
+                    tempPoints++;
                 } else {
                     this.game.field[i][j].wasDeadBefore = false;
                 }
             }
         }
+        this.game.setPoints(tempPoints);
     }
 
     private void setFlags() {

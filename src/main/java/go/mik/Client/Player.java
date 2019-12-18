@@ -1,5 +1,6 @@
 package go.mik.Client;
 
+import go.mik.UI.Components.ABS_UIWindow;
 import go.mik.UI.Components.UIWindow;
 
 import java.io.PrintWriter;
@@ -11,7 +12,7 @@ public class Player implements ServerConnector {
     private Socket socket;
     private Scanner input;
     private PrintWriter output;
-    private UIWindow _gameWindow;
+    private ABS_UIWindow _gameWindow;
 
     public Player(String nickName, String serverAddress, int socketPort) throws Exception {
         this.nickName = nickName;

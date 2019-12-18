@@ -1,10 +1,6 @@
 package go.mik.UI.Components;
 
 import static org.junit.Assert.*;
-import go.mik.Client.Player;
-import go.mik.Server.ServerStarter;
-import static org.mockito.Mockito.*;
-import org.junit.Before;
 import org.junit.Test;
 
 public class UI_WindowTest {
@@ -23,11 +19,6 @@ public class UI_WindowTest {
         _testUIWindow.getMessageForChat("test");
 
         assertEquals("test",_testUIWindow.get_chatBox().getText());
-    }
-
-    @Test
-    public void inputForChatListenerAndSender(){
-
     }
 
 }

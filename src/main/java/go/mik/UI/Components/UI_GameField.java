@@ -1,7 +1,6 @@
 package go.mik.UI.Components;
 
 import go.mik.Client.Player;
-import go.mik.UI.Managers.Stone;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

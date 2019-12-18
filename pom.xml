@@ -43,6 +43,12 @@
           <version>3.0.0</version>
           <scope>test</scope>
       </dependency>
+      <dependency>
+          <groupId>systems.manifold</groupId>
+          <artifactId>manifold</artifactId>
+          <version>2019.1.28</version>
+          <scope>test</scope>
+      </dependency>
   </dependencies>
 
   <build>

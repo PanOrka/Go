@@ -52,12 +52,12 @@ public class NormalBotLogic extends BotLogic {
                 }
 
                 if (this.field[i][k].isOccupied != 'o') {
-                    this.field[i][k].weight = -1;
+                    this.field[i][k].weight = -100;
                     continue;
                 }
 
                 if (this.field[i][k].wasDeadBefore) {
-                    this.field[i][k].weight = -1;
+                    this.field[i][k].weight = -100;
                     continue;
                 }
                 this.field[i][k].isOccupied = this.actualColor;
@@ -71,7 +71,7 @@ public class NormalBotLogic extends BotLogic {
                     this.checkOutOfBreath(i, k);
                     this.field[i][k].isOccupied = 'o';
                     if (!this.isEmptySuicide) {
-                        this.field[i][k].weight = -1;
+                        this.field[i][k].weight = -100;
                         continue;
                     }
                 } else if (this.killPoints == 1) {
